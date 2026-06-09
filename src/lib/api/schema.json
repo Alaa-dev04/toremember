@@ -1,0 +1,3326 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IT",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "login",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "example": {
+                "username": "cto",
+                "password": "password"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "first_name": {
+                              "type": "string"
+                            },
+                            "last_name": {
+                              "type": "string"
+                            },
+                            "username": {
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "integer"
+                            },
+                            "department_id": {
+                              "type": "integer"
+                            },
+                            "email_verified_at": {
+                              "type": "null"
+                            },
+                            "deleted_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "string"
+                            },
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "Accountant",
+                                "CTO",
+                                "IT"
+                              ]
+                            },
+                            "user_name": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "first_name",
+                            "last_name",
+                            "username",
+                            "status",
+                            "department_id",
+                            "email_verified_at",
+                            "deleted_at",
+                            "created_at",
+                            "updated_at",
+                            "role",
+                            "user_name",
+                            "email"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "token",
+                        "user"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3Nzk2OTI5OTcsImV4cCI6MTc3OTk1MjE5NywibmJmIjoxNzc5NjkyOTk3LCJqdGkiOiJYT0VEbDlWa25kTUM1OWVRIiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.LLuha8bffm4TcbpzaGMOWDmRUYCI2lstCHoFyzxBC6Y",
+                    "user": {
+                      "id": 2,
+                      "first_name": "Accountant",
+                      "last_name": "User",
+                      "username": "accountant",
+                      "status": 1,
+                      "department_id": 1,
+                      "email_verified_at": null,
+                      "deleted_at": null,
+                      "created_at": "2026-05-25T07:09:25.000000Z",
+                      "updated_at": "2026-05-25T07:09:25.000000Z",
+                      "role": "Accountant"
+                    }
+                  },
+                  "message": "تم تسجيل الدخول بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "logout",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": null,
+                  "message": "تم تسجيل الخروج بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "me",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "first_name": {
+                              "type": "string"
+                            },
+                            "last_name": {
+                              "type": "string"
+                            },
+                            "username": {
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "integer"
+                            },
+                            "department_id": {
+                              "type": "integer"
+                            },
+                            "email_verified_at": {
+                              "type": "null"
+                            },
+                            "deleted_at": {
+                              "type": "null"
+                            },
+                            "created_at": {
+                              "type": "string"
+                            },
+                            "updated_at": {
+                              "type": "string"
+                            },
+                            "role": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "first_name",
+                            "last_name",
+                            "username",
+                            "status",
+                            "department_id",
+                            "email_verified_at",
+                            "deleted_at",
+                            "created_at",
+                            "updated_at",
+                            "role"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "user"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 2,
+                      "first_name": "Accountant",
+                      "last_name": "User",
+                      "username": "accountant",
+                      "status": 1,
+                      "department_id": 1,
+                      "email_verified_at": null,
+                      "deleted_at": null,
+                      "created_at": "2026-05-25T07:08:26.000000Z",
+                      "updated_at": "2026-05-25T07:08:26.000000Z",
+                      "role": "Accountant"
+                    }
+                  },
+                  "message": "تم الحصول على البيانات بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_page": {
+                          "type": "integer"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "department": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "integer"
+                              },
+                              "role": {
+                                "type": "string"
+                              },
+                              "username": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "department",
+                              "status",
+                              "role",
+                              "username"
+                            ]
+                          }
+                        },
+                        "first_page_url": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "type": "integer"
+                        },
+                        "last_page_url": {
+                          "type": "string"
+                        },
+                        "links": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "page": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "active": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "url",
+                              "label",
+                              "page",
+                              "active"
+                            ]
+                          }
+                        },
+                        "next_page_url": {
+                          "type": "null"
+                        },
+                        "path": {
+                          "type": "string"
+                        },
+                        "per_page": {
+                          "type": "integer"
+                        },
+                        "prev_page_url": {
+                          "type": "null"
+                        },
+                        "to": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "current_page",
+                        "data",
+                        "first_page_url",
+                        "from",
+                        "last_page",
+                        "last_page_url",
+                        "links",
+                        "next_page_url",
+                        "path",
+                        "per_page",
+                        "prev_page_url",
+                        "to",
+                        "total"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "current_page": 1,
+                    "data": [
+                      {
+                        "id": 1,
+                        "name": "ali abdelhaq",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "CTO",
+                        "username": "cto"
+                      },
+                      {
+                        "id": 2,
+                        "name": "Accountant User",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "Accountant",
+                        "username": "accountant"
+                      },
+                      {
+                        "id": 3,
+                        "name": "IT User",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "IT",
+                        "username": "it"
+                      },
+                      {
+                        "id": 4,
+                        "name": "John Doe",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "IT",
+                        "username": "john"
+                      },
+                      {
+                        "id": 5,
+                        "name": "Linus Lynn",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "CTO",
+                        "username": "sypuqusur"
+                      },
+                      {
+                        "id": 6,
+                        "name": "Callum Donaldson",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "CTO",
+                        "username": "tovyx"
+                      },
+                      {
+                        "id": 7,
+                        "name": "ali abed",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "CTO",
+                        "username": "aliabed"
+                      },
+                      {
+                        "id": 8,
+                        "name": "Taylor Mckay",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "CTO",
+                        "username": "pahyhub"
+                      },
+                      {
+                        "id": 9,
+                        "name": "Fletcher Snow",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "Accountant",
+                        "username": "pubofeqofy"
+                      },
+                      {
+                        "id": 10,
+                        "name": "Wyoming Holland",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "IT",
+                        "username": "fawot"
+                      },
+                      {
+                        "id": 11,
+                        "name": "محمد ماهر",
+                        "department": "Raqqam",
+                        "status": 1,
+                        "role": "IT",
+                        "username": "maher"
+                      }
+                    ],
+                    "first_page_url": "http://172.20.2.65:8000/api/users?page=1",
+                    "from": 1,
+                    "last_page": 1,
+                    "last_page_url": "http://172.20.2.65:8000/api/users?page=1",
+                    "links": [
+                      {
+                        "url": null,
+                        "label": "&laquo; Previous",
+                        "page": null,
+                        "active": false
+                      },
+                      {
+                        "url": "http://172.20.2.65:8000/api/users?page=1",
+                        "label": "1",
+                        "page": 1,
+                        "active": true
+                      },
+                      {
+                        "url": null,
+                        "label": "Next &raquo;",
+                        "page": null,
+                        "active": false
+                      }
+                    ],
+                    "next_page_url": null,
+                    "path": "http://172.20.2.65:8000/api/users",
+                    "per_page": 15,
+                    "prev_page_url": null,
+                    "to": 11,
+                    "total": 11
+                  },
+                  "message": "تم استرجاع المستخدمين بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "department_id": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "first_name",
+                  "last_name",
+                  "username",
+                  "email",
+                  "password",
+                  "password_confirmation",
+                  "role",
+                  "department_id"
+                ]
+              },
+              "example": {
+                "first_name": "John",
+                "last_name": "Doe",
+                "username": "john",
+                "password": "Password",
+                "password_confirmation": "Password",
+                "role": "IT",
+                "department_id": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "department_id": {
+                          "type": "integer"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "first_name",
+                        "last_name",
+                        "username",
+                        "department_id",
+                        "updated_at",
+                        "created_at",
+                        "id",
+                        "role",
+                        "email"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "john",
+                    "department_id": 1,
+                    "updated_at": "2026-05-25T07:15:47.000000Z",
+                    "created_at": "2026-05-25T07:15:47.000000Z",
+                    "id": 4,
+                    "role": "IT"
+                  },
+                  "message": "تم إنشاء المستخدم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Show",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "integer"
+                        },
+                        "department_id": {
+                          "type": "integer"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "email_verified_at": {
+                          "type": "null"
+                        },
+                        "deleted_at": {
+                          "type": "null"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "department": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "first_name",
+                        "last_name",
+                        "username",
+                        "status",
+                        "department_id",
+                        "email",
+                        "email_verified_at",
+                        "deleted_at",
+                        "created_at",
+                        "updated_at",
+                        "role",
+                        "department"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "first_name": "CTO",
+                    "last_name": "User",
+                    "username": "cto",
+                    "status": 1,
+                    "department_id": 1,
+                    "email": "cto@example.com",
+                    "email_verified_at": null,
+                    "deleted_at": null,
+                    "created_at": "2026-05-21T13:39:41.000000Z",
+                    "updated_at": "2026-05-21T13:39:41.000000Z",
+                    "role": "CTO",
+                    "department": {
+                      "id": 1,
+                      "name": "Raqqam"
+                    }
+                  },
+                  "message": "تم استرجاع المستخدم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "11",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "password_confirmation": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "department_id": {
+                    "type": "integer"
+                  },
+                  "status": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "examples": {
+                "1": {
+                  "value": null
+                },
+                "2": {
+                  "value": {
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "john",
+                    "password": "Password",
+                    "password_confirmation": "Password",
+                    "role": "Accountant",
+                    "department_id": 1,
+                    "status": 1
+                  },
+                  "summary": "Example 2"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "integer"
+                        },
+                        "department_id": {
+                          "type": "integer"
+                        },
+                        "email_verified_at": {
+                          "type": "null"
+                        },
+                        "deleted_at": {
+                          "type": "null"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "first_name",
+                        "last_name",
+                        "username",
+                        "status",
+                        "department_id",
+                        "email_verified_at",
+                        "deleted_at",
+                        "created_at",
+                        "updated_at",
+                        "role"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "id": 4,
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "john",
+                    "status": 1,
+                    "department_id": 1,
+                    "email_verified_at": null,
+                    "deleted_at": null,
+                    "created_at": "2026-05-25T07:15:47.000000Z",
+                    "updated_at": "2026-05-25T07:15:47.000000Z",
+                    "role": "IT"
+                  },
+                  "message": "تم تحديث المستخدم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "4",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": null,
+                  "message": "تم حذف المستخدم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/users/toggle-status/{id}": {
+      "put": {
+        "summary": "toggle",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "4",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "boolean"
+                        },
+                        "department_id": {
+                          "type": "integer"
+                        },
+                        "email_verified_at": {
+                          "type": "null"
+                        },
+                        "deleted_at": {
+                          "type": "null"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "user_name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "first_name",
+                        "last_name",
+                        "username",
+                        "status",
+                        "department_id",
+                        "email_verified_at",
+                        "deleted_at",
+                        "created_at",
+                        "updated_at",
+                        "role",
+                        "user_name",
+                        "email"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "id": 4,
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "username": "john",
+                    "status": false,
+                    "department_id": 1,
+                    "email_verified_at": null,
+                    "deleted_at": null,
+                    "created_at": "2026-05-25T07:15:47.000000Z",
+                    "updated_at": "2026-05-25T07:20:27.000000Z",
+                    "role": "IT"
+                  },
+                  "message": "تم تحديث حالة المستخدم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/roles": {
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role :CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 3,
+                      "name": "Accountant"
+                    },
+                    {
+                      "id": 1,
+                      "name": "CTO"
+                    },
+                    {
+                      "id": 2,
+                      "name": "IT"
+                    }
+                  ],
+                  "message": "تم جلب الصلاحيات بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/companies": {
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role :IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "Zikola"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "updated_at",
+                        "created_at",
+                        "id"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "name": "Zikola",
+                    "updated_at": "2026-05-23T09:52:16.000000Z",
+                    "created_at": "2026-05-23T09:52:16.000000Z",
+                    "id": 11
+                  },
+                  "message": "تم إنشاء الشركة بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role :IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Hessel-Baumbach"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Shanahan LLC"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Bashirian and Sons"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Witting LLC"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Roberts Inc"
+                    },
+                    {
+                      "id": 6,
+                      "name": "Streich Ltd"
+                    },
+                    {
+                      "id": 7,
+                      "name": "Rutherford and Sons"
+                    },
+                    {
+                      "id": 8,
+                      "name": "D'Amore and Sons"
+                    },
+                    {
+                      "id": 9,
+                      "name": "Metz Group"
+                    },
+                    {
+                      "id": 10,
+                      "name": "Grimes, Wolff and Mann"
+                    }
+                  ],
+                  "message": "تم جلب الشركات بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/departments": {
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role :IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "new department"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "updated_at",
+                        "created_at",
+                        "id"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "name": "new department",
+                    "updated_at": "2026-05-23T09:54:08.000000Z",
+                    "created_at": "2026-05-23T09:54:08.000000Z",
+                    "id": 2
+                  },
+                  "message": "تم إنشاء القسم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role:IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Raqqam"
+                    },
+                    {
+                      "id": 2,
+                      "name": "new department"
+                    }
+                  ],
+                  "message": "تم جلب الأقسام بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/items": {
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role : IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "Screen"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "updated_at",
+                        "created_at",
+                        "id"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "name": "Screen",
+                    "updated_at": "2026-05-23T09:50:38.000000Z",
+                    "created_at": "2026-05-23T09:50:38.000000Z",
+                    "id": 12
+                  },
+                  "message": "تم إنشاء العنصر بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role :IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "sit"
+                    },
+                    {
+                      "id": 2,
+                      "name": "et"
+                    },
+                    {
+                      "id": 3,
+                      "name": "et"
+                    },
+                    {
+                      "id": 4,
+                      "name": "porro"
+                    },
+                    {
+                      "id": 5,
+                      "name": "quidem"
+                    },
+                    {
+                      "id": 6,
+                      "name": "numquam"
+                    },
+                    {
+                      "id": 7,
+                      "name": "sit"
+                    },
+                    {
+                      "id": 8,
+                      "name": "enim"
+                    },
+                    {
+                      "id": 9,
+                      "name": "eos"
+                    },
+                    {
+                      "id": 10,
+                      "name": "in"
+                    }
+                  ],
+                  "message": "تم جلب العناصر بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders": {
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role:IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item_id": {
+                          "type": "integer"
+                        },
+                        "quantity": {
+                          "type": "integer"
+                        },
+                        "company_id": {
+                          "type": "integer"
+                        },
+                        "department_id": {
+                          "type": "integer"
+                        },
+                        "applier_id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "item_id",
+                        "quantity",
+                        "company_id",
+                        "department_id",
+                        "applier_id"
+                      ]
+                    }
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "items",
+                  "notes"
+                ]
+              },
+              "example": {
+                "items": [
+                  {
+                    "item_id": 2,
+                    "quantity": 5,
+                    "company_id": 3,
+                    "department_id": 1,
+                    "applier_id": 1
+                  },
+                  {
+                    "item_id": 4,
+                    "quantity": 2,
+                    "company_id": 2,
+                    "department_id": 1,
+                    "applier_id": 1
+                  }
+                ],
+                "notes": "new order for software"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "user_id": {
+                          "type": "integer"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "user_id",
+                        "status",
+                        "notes",
+                        "updated_at",
+                        "created_at",
+                        "id"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "user_id": 3,
+                    "status": "pending",
+                    "notes": "new order for software",
+                    "updated_at": "2026-05-23T13:18:57.000000Z",
+                    "created_at": "2026-05-23T13:18:57.000000Z",
+                    "id": 1
+                  },
+                  "message": "تم إنشاء الطلب بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role:Accountant, CTO, IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "filter[status]",
+            "in": "query",
+            "description": "pending , accepted ,  rejected ",
+            "required": false,
+            "example": "accepted",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "2026-05-23",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paginate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "10",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_page": {
+                          "type": "integer"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "total_quantity": {
+                                "type": "integer"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "first_page_url": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "type": "integer"
+                        },
+                        "last_page_url": {
+                          "type": "string"
+                        },
+                        "links": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "page": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "active": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "url",
+                              "label",
+                              "page",
+                              "active"
+                            ]
+                          }
+                        },
+                        "next_page_url": {
+                          "type": "null"
+                        },
+                        "path": {
+                          "type": "string"
+                        },
+                        "per_page": {
+                          "type": "integer"
+                        },
+                        "prev_page_url": {
+                          "type": "null"
+                        },
+                        "to": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "current_page",
+                        "data",
+                        "first_page_url",
+                        "from",
+                        "last_page",
+                        "last_page_url",
+                        "links",
+                        "next_page_url",
+                        "path",
+                        "per_page",
+                        "prev_page_url",
+                        "to",
+                        "total"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "current_page": 1,
+                    "data": [
+                      {
+                        "id": 1,
+                        "created_at": "2026-05-23T11:10:00.000000Z",
+                        "total_quantity": 7,
+                        "status": "pending",
+                        "updated_at": "2026-05-23T11:10:00.000000Z"
+                      }
+                    ],
+                    "first_page_url": "http://127.0.0.1:8000/api/orders?page=1",
+                    "from": 1,
+                    "last_page": 1,
+                    "last_page_url": "http://127.0.0.1:8000/api/orders?page=1",
+                    "links": [
+                      {
+                        "url": null,
+                        "label": "&laquo; Previous",
+                        "page": null,
+                        "active": false
+                      },
+                      {
+                        "url": "http://127.0.0.1:8000/api/orders?page=1",
+                        "label": "1",
+                        "page": 1,
+                        "active": true
+                      },
+                      {
+                        "url": null,
+                        "label": "Next &raquo;",
+                        "page": null,
+                        "active": false
+                      }
+                    ],
+                    "next_page_url": null,
+                    "path": "http://127.0.0.1:8000/api/orders",
+                    "per_page": 15,
+                    "prev_page_url": null,
+                    "to": 1,
+                    "total": 1
+                  },
+                  "message": "تم جلب الطلبات بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Show",
+        "deprecated": false,
+        "description": "Role : IT ,Accountant,CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "order_items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "item": {
+                                "type": "string"
+                              },
+                              "company": {
+                                "type": "string"
+                              },
+                              "department": {
+                                "type": "string"
+                              },
+                              "applier": {
+                                "type": "string"
+                              },
+                              "quantity": {
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "item",
+                              "company",
+                              "department",
+                              "applier",
+                              "quantity"
+                            ]
+                          }
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "rejection_reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "created_at",
+                        "order_items",
+                        "notes",
+                        "status",
+                        "rejection_reason"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "created_at": "2026-05-25T07:17:56.000000Z",
+                    "order_items": [
+                      {
+                        "id": 1,
+                        "item": "qui",
+                        "company": "Bashirian and Sons",
+                        "department": "Raqqam",
+                        "applier": "Ms. Simone Gislason",
+                        "quantity": 5
+                      },
+                      {
+                        "id": 2,
+                        "item": "aliquid",
+                        "company": "Shanahan LLC",
+                        "department": "Raqqam",
+                        "applier": "Ms. Simone Gislason",
+                        "quantity": 2
+                      }
+                    ],
+                    "notes": "new order for software",
+                    "status": "rejected",
+                    "rejection_reason": "hi"
+                  },
+                  "message": "تم جلب الطلب بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/stats": {
+      "get": {
+        "summary": "Stats",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "accepted": {
+                          "type": "string"
+                        },
+                        "rejected": {
+                          "type": "string"
+                        },
+                        "pending": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "accepted",
+                        "rejected",
+                        "pending"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "data"
+                  ]
+                },
+                "example": {
+                  "message": "Order stats fetched successfully",
+                  "data": {
+                    "total": 10,
+                    "accepted": "4",
+                    "rejected": "3",
+                    "pending": "3"
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}/status": {
+      "put": {
+        "summary": "Update Status",
+        "deprecated": false,
+        "description": "Role: Accountant",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  },
+                  "rejection_reason": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "status",
+                  "rejection_reason"
+                ]
+              },
+              "example": {
+                "status": "accepted",
+                "rejection_reason": null
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "null"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": null,
+                  "message": "تم تحديث حالة الطلب بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/orders/{id}/pdf": {
+      "get": {
+        "summary": "Download PDF",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/pdf",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/audits": {
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role: CTO",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "filter[event]",
+            "in": "query",
+            "description": "created,updated,deleted",
+            "required": false,
+            "example": "created",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[created_at]",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "2026-06-02",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paginate",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "50",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "current_page": {
+                          "type": "integer"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "user_id": {
+                                "type": "integer"
+                              },
+                              "user_name": {
+                                "type": "string"
+                              },
+                              "user_role": {
+                                "type": "string"
+                              },
+                              "event": {
+                                "type": "string"
+                              },
+                              "auditable_type": {
+                                "type": "string"
+                              },
+                              "auditable_id": {
+                                "type": "integer"
+                              },
+                              "created_at": {
+                                "type": "string"
+                              },
+                              "updated_at": {
+                                "type": "string"
+                              },
+                              "old_values": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "new_values": {
+                                "type": "object",
+                                "properties": {
+                                  "user_id": {
+                                    "type": "integer"
+                                  },
+                                  "status": {
+                                    "type": "string"
+                                  },
+                                  "notes": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "id": {
+                                    "type": "integer"
+                                  },
+                                  "first_name": {
+                                    "type": "string"
+                                  },
+                                  "last_name": {
+                                    "type": "string"
+                                  },
+                                  "username": {
+                                    "type": "string"
+                                  },
+                                  "password": {
+                                    "type": "string"
+                                  },
+                                  "department_id": {
+                                    "type": "integer"
+                                  }
+                                },
+                                "required": [
+                                  "user_id",
+                                  "status",
+                                  "notes",
+                                  "id"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "user_id",
+                              "user_name",
+                              "user_role",
+                              "event",
+                              "auditable_type",
+                              "auditable_id",
+                              "created_at",
+                              "updated_at",
+                              "old_values",
+                              "new_values"
+                            ]
+                          }
+                        },
+                        "first_page_url": {
+                          "type": "string"
+                        },
+                        "from": {
+                          "type": "integer"
+                        },
+                        "last_page": {
+                          "type": "integer"
+                        },
+                        "last_page_url": {
+                          "type": "string"
+                        },
+                        "links": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "url": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "page": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ]
+                              },
+                              "active": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "url",
+                              "label",
+                              "page",
+                              "active"
+                            ]
+                          }
+                        },
+                        "next_page_url": {
+                          "type": "null"
+                        },
+                        "path": {
+                          "type": "string"
+                        },
+                        "per_page": {
+                          "type": "integer"
+                        },
+                        "prev_page_url": {
+                          "type": "null"
+                        },
+                        "to": {
+                          "type": "integer"
+                        },
+                        "total": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "current_page",
+                        "data",
+                        "first_page_url",
+                        "from",
+                        "last_page",
+                        "last_page_url",
+                        "links",
+                        "next_page_url",
+                        "path",
+                        "per_page",
+                        "prev_page_url",
+                        "to",
+                        "total"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "current_page": 1,
+                    "data": [
+                      {
+                        "id": 3,
+                        "user_id": 1,
+                        "user_name": "CTO User",
+                        "user_role": "CTO",
+                        "event": "تم إنشاء مستخدم",
+                        "auditable_type": "مستخدم",
+                        "auditable_id": 4,
+                        "created_at": "2026-05-23T12:15:40.000000Z",
+                        "updated_at": "2026-05-23T12:15:40.000000Z",
+                        "old_values": [],
+                        "new_values": {
+                          "first_name": "John",
+                          "last_name": "Doe",
+                          "email": "ypusef@example.com",
+                          "password": "$2y$12$zeDraoexMrW2EeeYS3pcPe7jQN/37cZ1ApYalFrExGi43JHJGMLmO",
+                          "department_id": 1,
+                          "username": "ypusef",
+                          "id": 4
+                        }
+                      },
+                      {
+                        "id": 2,
+                        "user_id": 3,
+                        "user_name": "IT User",
+                        "user_role": "IT",
+                        "event": "تم إنشاء طلب",
+                        "auditable_type": "طلب",
+                        "auditable_id": 4,
+                        "created_at": "2026-05-23T11:59:40.000000Z",
+                        "updated_at": "2026-05-23T11:59:40.000000Z",
+                        "old_values": [],
+                        "new_values": {
+                          "user_id": 3,
+                          "status": "pending",
+                          "id": 4
+                        }
+                      },
+                      {
+                        "id": 1,
+                        "user_id": 3,
+                        "user_name": "IT User",
+                        "user_role": "IT",
+                        "event": "تم إنشاء طلب",
+                        "auditable_type": "طلب",
+                        "auditable_id": 3,
+                        "created_at": "2026-05-23T11:43:57.000000Z",
+                        "updated_at": "2026-05-23T11:43:57.000000Z",
+                        "old_values": [],
+                        "new_values": {
+                          "user_id": 3,
+                          "status": "pending",
+                          "id": 3
+                        }
+                      }
+                    ],
+                    "first_page_url": "http://127.0.0.1:8000/api/audits?page=1",
+                    "from": 1,
+                    "last_page": 1,
+                    "last_page_url": "http://127.0.0.1:8000/api/audits?page=1",
+                    "links": [
+                      {
+                        "url": null,
+                        "label": "&laquo; Previous",
+                        "page": null,
+                        "active": false
+                      },
+                      {
+                        "url": "http://127.0.0.1:8000/api/audits?page=1",
+                        "label": "1",
+                        "page": 1,
+                        "active": true
+                      },
+                      {
+                        "url": null,
+                        "label": "Next &raquo;",
+                        "page": null,
+                        "active": false
+                      }
+                    ],
+                    "next_page_url": null,
+                    "path": "http://127.0.0.1:8000/api/audits",
+                    "per_page": 15,
+                    "prev_page_url": null,
+                    "to": 3,
+                    "total": 3
+                  },
+                  "message": "تم جلب السجلات بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/appliers": {
+      "post": {
+        "summary": "Store",
+        "deprecated": false,
+        "description": "Role:IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "example": {
+                "name": "seham"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "updated_at",
+                        "created_at",
+                        "id"
+                      ]
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": {
+                    "name": "seham",
+                    "updated_at": "2026-05-23T13:17:07.000000Z",
+                    "created_at": "2026-05-23T13:17:07.000000Z",
+                    "id": 11
+                  },
+                  "message": "تم إنشاء المُقدِّم بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "All",
+        "deprecated": false,
+        "description": "Role: IT",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "data",
+                    "message"
+                  ]
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": 1,
+                      "name": "Mrs. Virginie Smith"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Shanel Reynolds"
+                    },
+                    {
+                      "id": 3,
+                      "name": "Tod Glover"
+                    },
+                    {
+                      "id": 4,
+                      "name": "Nash Kuhn"
+                    },
+                    {
+                      "id": 5,
+                      "name": "Laurie Grant"
+                    },
+                    {
+                      "id": 6,
+                      "name": "Immanuel Lang"
+                    },
+                    {
+                      "id": 7,
+                      "name": "Alda Dickens Sr."
+                    },
+                    {
+                      "id": 8,
+                      "name": "Mr. Griffin Wehner"
+                    },
+                    {
+                      "id": 9,
+                      "name": "Alva Heidenreich"
+                    },
+                    {
+                      "id": 10,
+                      "name": "Wava Shanahan"
+                    }
+                  ],
+                  "message": "تم جلب المُقدِّمين بنجاح"
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "webhooks": {},
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": []
+}

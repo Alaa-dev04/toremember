@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-
 import {
   LayoutDashboard,
   FileEdit,
@@ -23,7 +22,6 @@ import {
 
 
 import { cn } from '@/lib/utils';
-
 import { Button } from '@/components/ui/button';
 
 import {
@@ -45,6 +43,7 @@ type menuItems = {
   href: string;
   roles: string[];
 }[];
+/////this is my way to die 
 
 const menuItems = [
   {
@@ -84,7 +83,7 @@ const menuItems = [
     roles: ['cto'],
   },
 ];
-
+// give up this is not for me
 function AppSidebar() {
   const pathname = usePathname();
 
@@ -111,7 +110,7 @@ function AppSidebar() {
             </div>
           </div>
         </SidebarHeader>
-
+{/* haneen good for you u really know how to get on with this live  */}
         {/* Content */}
         <SidebarContent>
           <SidebarGroup>

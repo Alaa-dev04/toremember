@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 type LoginLayoutProps = {
   children: ReactNode;
 };
+///this is so fucked up 
 
 export default function LoginLayout({ children }: LoginLayoutProps) {
   return (

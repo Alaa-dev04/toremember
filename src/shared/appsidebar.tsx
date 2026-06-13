@@ -31,20 +31,20 @@ import {
   Fragment,
   RefAttributes,
 } from 'react';
-
+import { LucideProps } from 'lucide-react';
 
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-// type menuItems = {
-//   title: string;
-//   icon: ForwardRefExoticComponent<
-//     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-//   >;
-//   href: string;
-//   roles: UserTypes[];
-// }[];
+type menuItems = {
+  title: string;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+  >;
+  href: string;
+  roles: string[];
+}[];
 
 const menuItems = [
   {

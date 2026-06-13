@@ -18,6 +18,8 @@ const PHASE_DELAYS = {
 
 export default function LoginPage() {
   const [phase, setPhase] = useState<logingPhase>("bg");
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const ANIMATION_DURATION = "duration-1000";
   const ANIMATION_DURATION_SLOW = "duration-[1400ms]";
@@ -151,9 +153,19 @@ export default function LoginPage() {
                     <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
                         كلمة المرور
                     </label>
-                    <Input type="password" placeholder="كلمة المرور" className="w-full" />
+                    
+                    <div className="relative">
+                      <Input type={showPassword ? "text" : "password"} placeholder="كلمة المرور" className="w-full" />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3] hover:text-[#FDFDFD]"
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </button>
+                    </div>
                 </div>
-                <Button className="mt-6 bg-[#00A896] hover:bg-[#008C7A] text-[#FDFDFD]">
+                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full"  >
                   تسجيل الدخول
                 </Button>
               </form>

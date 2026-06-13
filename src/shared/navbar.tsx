@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Navbar() {
+    ///// to add info later on 
   const { data: session } = useSession();
 
   return (
@@ -16,7 +17,7 @@ export default function Navbar() {
           نظام إدارة طلبات الـ IT
         </h1>
       </div>
-
+    {/* ////hate this live gonna cry or kill myself man this is hard  */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-4">
           <div className="flex flex-col text-left">

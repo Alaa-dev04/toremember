@@ -1,4 +1,4 @@
 import createClient from "openapi-react-query";
-import { fetchClient } from "./clients.lib";
+import { fetchClient } from "./api/clients";
 
 export const $api = createClient(fetchClient);

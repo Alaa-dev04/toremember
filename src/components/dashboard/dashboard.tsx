@@ -12,8 +12,8 @@ import {
   Plus,
   Eye,
 } from "lucide-react";
-import { useOrders } from "@/features/orders/hooks/userorders";
-import { useMemo } from "react";
+import type { paths } from "@/lib/api/generated";
+
 const stats = [
   {
     title: "إجمالي الطلبات",
@@ -88,7 +88,7 @@ const columns = [
   {
     accessorKey: "status",
     header: "الحالة",
-    cell: ({ row }) => {
+    cell: ({ row }: any) => {
       const status = row.original.status;
 
       if (status === "approved") {

@@ -64,24 +64,8 @@ const menuItems = [
     href: '/orders',
     roles: ['it'],
   },
-  {
-    title: 'جميع الطلبات',
-    icon: Package,
-    href: '/orders',
-    roles: ['cto', 'account'],
-  },
-  {
-    title: 'إدارة المستخدمين',
-    icon: Users,
-    href: '/users',
-    roles: ['cto'],
-  },
-  {
-    title: 'سجل العمليات',
-    icon: ListChecks,
-    href: '/operations',
-    roles: ['cto'],
-  },
+  
+
 ];
 // give up this is not for me
 function AppSidebar() {
@@ -151,11 +135,11 @@ function AppSidebar() {
             <div className="rounded-md bg-[#2B2B2B] p-4">
               <div className="flex flex-col text-left">
                 <span className="text-sm font-medium">
-                  {me?.data.user.username}
+                it user 
                 </span>
 
                 <span className="mt-1 text-xs text-[#A0A0A0]">
-                  {me?.data.user.role}
+               alaa@.com
                 </span>
               </div>
             </div>

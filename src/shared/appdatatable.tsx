@@ -92,7 +92,8 @@ export function AppDataTable<TData, TValue>({
     },
     [setTableQuery]
   );
-
+console.log("columns:", columns);
+console.log("data:", data);
   const table = useReactTable({
     data,
     columns,

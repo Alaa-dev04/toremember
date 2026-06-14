@@ -1,14 +1,32 @@
-import type { ReactNode } from 'react';
-
+import type { ReactNode } from "react";
+import Navbar from "@/shared/navbar";
+import AppSidebar from "@/shared/appsidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarInset } from "@/components/ui/sidebar";
 type LoginLayoutProps = {
   children: ReactNode;
 };
-///this is so fucked up 
 
 export default function LoginLayout({ children }: LoginLayoutProps) {
   return (
-    <main className="min-h-svh w-full max-w-none flex-1 overflow-x-hidden">
-      {children}
-    </main>
+  <SidebarProvider>
+
+      <div className="flex min-h-screen w-full bg-black">
+
+        <AppSidebar />
+
+        <div className="flex flex-1 flex-col">
+
+          <Navbar />
+
+          <main className="flex-1">
+            {children}
+          </main>
+
+        </div>
+
+      </div>
+
+    </SidebarProvider>
   );
 }

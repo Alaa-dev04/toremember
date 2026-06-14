@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -13,8 +12,38 @@ import {
   Plus,
   Eye,
 } from "lucide-react";
-import { getOrders } from "@/features/orders/api/getorders";
 import { useOrders } from "@/features/orders/hooks/userorders";
+import { useMemo } from "react";
+const stats = [
+  {
+    title: "إجمالي الطلبات",
+    value: 24,
+    icon: FileText,
+    color: "text-orange-500",
+    bg: "bg-orange-500/10",
+  },
+  {
+    title: "طلبات قيد المراجعة",
+    value: 14,
+    icon: Clock3,
+    color: "text-yellow-500",
+    bg: "bg-yellow-500/10",
+  },
+  {
+    title: "طلبات مقبولة",
+    value: 8,
+    icon: CheckCircle2,
+    color: "text-green-500",
+    bg: "bg-green-500/10",
+  },
+  {
+    title: "طلبات مرفوضة",
+    value: 2,
+    icon: XCircle,
+    color: "text-red-500",
+    bg: "bg-red-500/10",
+  },
+];
 
 const tableData = [
   {
@@ -59,7 +88,7 @@ const columns = [
   {
     accessorKey: "status",
     header: "الحالة",
-    cell: ({ row }: any) => {
+    cell: ({ row }) => {
       const status = row.original.status;
 
       if (status === "approved") {
@@ -127,64 +156,6 @@ const columns = [
 ];
 
 export default function Dashboard() {
-  const { orders } = useOrders();
-  const [fetchedOrders, setFetchedOrders] = useState<any[]>([]);
-
-  useEffect(() => {
-    getOrders()
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setFetchedOrders(data);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
-  const displayData =
-    orders !== undefined && orders !== null
-      ? orders
-      : fetchedOrders.length
-      ? fetchedOrders
-      : tableData;
-
-  const stats = useMemo(() => {
-    const total = displayData.length;
-    const pending = displayData.filter((item: any) => item.status === "pending").length;
-    const approved = displayData.filter((item: any) => item.status === "approved").length;
-    const rejected = displayData.filter((item: any) => item.status === "rejected").length;
-
-    return [
-      {
-        title: "إجمالي الطلبات",
-        value: total,
-        icon: FileText,
-        color: "text-orange-500",
-        bg: "bg-orange-500/10",
-      },
-      {
-        title: "طلبات قيد المراجعة",
-        value: pending,
-        icon: Clock3,
-        color: "text-yellow-500",
-        bg: "bg-yellow-500/10",
-      },
-      {
-        title: "طلبات مقبولة",
-        value: approved,
-        icon: CheckCircle2,
-        color: "text-green-500",
-        bg: "bg-green-500/10",
-      },
-      {
-        title: "طلبات مرفوضة",
-        value: rejected,
-        icon: XCircle,
-        color: "text-red-500",
-        bg: "bg-red-500/10",
-      },
-    ];
-  }, [displayData]);
-
   return (
     <div dir="rtl" className="space-y-8 p-6">
       {/* welcome section */}

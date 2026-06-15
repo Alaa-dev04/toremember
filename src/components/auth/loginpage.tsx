@@ -19,8 +19,6 @@ const PHASE_DELAYS = {
 export default function LoginPage() {
   const [phase, setPhase] = useState<logingPhase>("bg");
   const [showPassword, setShowPassword] = useState(false);
-
-
   const ANIMATION_DURATION = "duration-1000";
   const ANIMATION_DURATION_SLOW = "duration-[1400ms]";
 

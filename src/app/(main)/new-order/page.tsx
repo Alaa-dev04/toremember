@@ -3,7 +3,8 @@ import React from 'react'
 
 const page = () => {
   return (
-    <NewOrder/>  )
+    <div className="m-4"><NewOrder/> </div>
+     )
 }
 
 export default page

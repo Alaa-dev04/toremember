@@ -35,7 +35,7 @@ function Orders() {
         isPaginated
         totalItems={data?.data.total}
         isLoading={isLoading}
-      />
+      /> 
     </div>
   );
 }

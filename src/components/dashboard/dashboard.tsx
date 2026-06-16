@@ -94,7 +94,7 @@ const columns = [
       if (status === "approved") {
         return (
           <Badge
-            className=" w-[110px]
+            className=" w-27.5
             h-8
             rounded-sm
             flex items-center justify-center
@@ -112,7 +112,7 @@ const columns = [
         return (
   <Badge
     className="
-      w-[110px]
+      w-27.5
       h-7
       rounded-sm
       flex items-center justify-center
@@ -129,7 +129,7 @@ const columns = [
       return (
         <Badge
     className="
-      w-[110px]
+      w-27.5
       h-8
       rounded-sm
       flex items-center justify-center

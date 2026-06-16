@@ -67,7 +67,7 @@ const NewOrder = () => {
   const items = watch('items') || [];
 
   const editItemIndex = watch('editingIndex');
-  const showTable = editItemIndex === null ? true : false;
+  const showTable = items.length > 0 && editItemIndex === null;
 
   const handleDelete = (index: number) => {
     setIsDeleteDialogOpen(true);

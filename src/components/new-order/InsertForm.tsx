@@ -310,7 +310,7 @@ const InsertForm = () => {
             control={form.control}
             name="tempItem.company_id"
             render={({ field }) => (
-              <Field>
+              <Field className=''>
                 <FieldLabel>
                   الشركة <span className="text-red-500">*</span>
                 </FieldLabel>

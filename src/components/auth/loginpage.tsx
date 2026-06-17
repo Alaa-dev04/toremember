@@ -2,11 +2,21 @@
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Eye, EyeOff } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Eye, EyeOff } from "lucide-react";
 import { useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { loginSchema, LoginSchemaType } from "@/zod/auth/login.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+type Logingform = {
+  username: string;
+  password: string;
+};
 type logingPhase = "bg" | "logo-rise" | "logo-right" | "form";
 
 ///makes the code cleaner easy to edit later and helps with type script type checking
@@ -21,7 +31,35 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const ANIMATION_DURATION = "duration-1000";
   const ANIMATION_DURATION_SLOW = "duration-[1400ms]";
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
 
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+
+    mode: "onSubmit",
+  });
+  const onSubmit = async (data: Logingform) => {
+    const res = await signIn("credentials", {
+      // Add logic here to look up the user from the credentials supplied
+      redirect: false,
+      username: data.username,
+      password: data.password,
+    });
+    if (!res || res.error) {
+      toast.error("فشل فى تسجيل الدخول ");
+      return;
+    }
+    toast.success("تم تسجيل الدخول بنجاح");
+    router.push("/dashboard");
+  };
+  const router = useRouter();
   ////need to use use effct becouse of the set time out
   useEffect(() => {
     const logoapptimer = setTimeout(() => {
@@ -45,9 +83,6 @@ export default function LoginPage() {
 
     ///// empty dependency array to run the effect only once when the component mounts
   }, []);
-
-  ///// hide intro when form appear
-  const showINTRO = phase !== "form";
 
   return (
     <>
@@ -133,44 +168,66 @@ export default function LoginPage() {
           )}
         >
           <div className="w-full max-w-2xl  ">
-            <div className="mb-10   bg-black p-6 rounded-lg text-right md:mb-16" dir="rtl">
+            <div
+              className="mb-10   bg-black p-6 rounded-lg text-right md:mb-16"
+              dir="rtl"
+            >
               <h1 className="text-3xl leading-tight font-bold text-[#FDFDFD] md:text-5xl">
                 تسجيل الدخول
               </h1>
               <p className="text-md mt-2 text-[#A3A3A3] md:text-xl">
                 يرجى ادخال بياناتك لتسجيل دخولك الى النظام
               </p>
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div>
-                    <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
-                        اسم المستخدم
-                    </label>
-                    <Input type="text" placeholder="اسم المستخدم" className="w-full" />
+                  <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
+                    اسم المستخدم
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="اسم المستخدم"
+                    className="w-full"
+                    {...register("username")}
+                  />
+                  {errors.username && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.username.message}
+                    </p>
+                  )}
                 </div>
                 <div className="mt-4">
-                    <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
-                        كلمة المرور
-                    </label>
-                    
-                    <div className="relative">
-                      <Input type={showPassword ? "text" : "password"} placeholder="كلمة المرور" className="w-full" />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3] hover:text-[#FDFDFD]"
-                      >
-                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                      </button>
-                    </div>
+                  <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
+                    كلمة المرور
+                  </label>
+
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="كلمة المرور"
+                      className="w-full"
+                      {...register("password")}
+                    />
+                    {errors.password && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.password.message}
+                      </p>
+                    )}
+                    <button
+                      type="submit"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3] hover:text-[#FDFDFD]"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
                 </div>
-                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full"  >
+                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full">
                   تسجيل الدخول
                 </Button>
               </form>
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

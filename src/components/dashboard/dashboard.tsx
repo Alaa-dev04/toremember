@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useMemo} from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
@@ -13,6 +14,7 @@ import {
   Eye,
 } from "lucide-react";
 import type { paths } from "@/lib/api/generated";
+
 
 const stats = [
   {

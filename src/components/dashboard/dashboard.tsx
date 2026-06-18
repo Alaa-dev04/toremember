@@ -2,8 +2,9 @@
 
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Card } from "../ui/card";
-import { Button } from "../ui/button";
+
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { AppDataTable } from "@/shared/appdatatable";
 
 import {
@@ -14,80 +15,129 @@ import {
   Plus,
 } from "lucide-react";
 
-import { columns, Order } from "@/features/orders/colums";
-
-// temporary mock until backend connected
-const ordersData: Order[] = [
-  {
-    id: 1,
-    created_at: "15 مارس 2026",
-    quantity: 4,
-    status: "approved",
-  } as Order,
-
-  {
-    id: 2,
-    created_at: "17 مارس 2026",
-    quantity: 7,
-    status: "pending",
-  } as Order,
-
-  {
-    id: 3,
-    created_at: "18 مارس 2026",
-    quantity: 3,
-    status: "rejected",
-  } as Order,
-];
-
-const stats = [
-  {
-    title: "إجمالي الطلبات",
-    value: 24,
-    icon: FileText,
-    color: "text-orange-500",
-    bg: "bg-orange-500/10",
-  },
-  {
-    title: "طلبات قيد المراجعة",
-    value: 14,
-    icon: Clock3,
-    color: "text-yellow-500",
-    bg: "bg-yellow-500/10",
-  },
-  {
-    title: "طلبات مقبولة",
-    value: 8,
-    icon: CheckCircle2,
-    color: "text-green-500",
-    bg: "bg-green-500/10",
-  },
-  {
-    title: "طلبات مرفوضة",
-    value: 2,
-    icon: XCircle,
-    color: "text-red-500",
-    bg: "bg-red-500/10",
-  },
-];
+import { columns } from "@/features/orders/colums";
+import { $api } from "@/lib/tanstack.lib";
 
 export default function Dashboard() {
   const router = useRouter();
 
-  const handleView = (id: number) => {
-    console.log(id);
+  /*
+  ============================
+  Fetch Orders
+  ============================
+  */
+  const {
+    data: orders,
+    isLoading: ordersLoading,
+    error: ordersError,
+  } = $api.useQuery("get", "/orders", {
+    params: {
+      query: {
+        paginate: "10",
+      },
+    },
+  });
 
-    // later:
-    // router.push(`/orders/${id}`)
+  /*
+  ============================
+  Fetch Order Stats
+  ============================
+  */
+  const {
+    data: statsapi,
+    isLoading: statsLoading,
+  } = $api.useQuery("get", "/orders/stats");
+
+  /*
+  ============================
+  Handle View Order
+  ============================
+  */
+  const handleView = (id: number) => {
+    console.log("Viewing order:", id);
+
+    // navigate to order details page
+    router.push(`/dashboard/orders/${id}`);
   };
 
+  /*
+  ============================
+  Table Columns
+  ============================
+  */
   const tableColumns = useMemo(() => {
     return columns(handleView);
   }, []);
 
+  /*
+  ============================
+  Stats Cards (dynamic)
+  ============================
+  */
+  const stats = [
+    {
+      title: "إجمالي الطلبات",
+      value: statsapi?.data?.total || 0,
+      icon: FileText,
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
+    },
+
+    {
+      title: "طلبات قيد المراجعة",
+      value: statsapi?.data?.pending || 0,
+      icon: Clock3,
+      color: "text-yellow-500",
+      bg: "bg-yellow-500/10",
+    },
+
+    {
+      title: "طلبات مقبولة",
+      value: statsapi?.data?.accepted || 0,
+      icon: CheckCircle2,
+      color: "text-green-500",
+      bg: "bg-green-500/10",
+    },
+
+    {
+      title: "طلبات مرفوضة",
+      value: statsapi?.data?.rejected || 0,
+      icon: XCircle,
+      color: "text-red-500",
+      bg: "bg-red-500/10",
+    },
+  ];
+
+  /*
+  ============================
+  Loading State
+  ============================
+  */
+  if (ordersLoading || statsLoading) {
+    return (
+      <div className="p-10 text-white text-center">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  /*
+  ============================
+  Error State
+  ============================
+  */
+  if (ordersError) {
+    return (
+      <div className="p-10 text-red-500 text-center">
+        Failed to fetch data
+      </div>
+    );
+  }
+
   return (
     <div dir="rtl" className="space-y-8 p-6">
-      {/* welcome section */}
+
+      {/* Welcome Section */}
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -100,13 +150,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* stats */}
+      {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-4">
         {stats.map((item) => {
           const Icon = item.icon;
 
           return (
-            <Card key={item.title} className="border-none bg-[#181818] p-6">
+            <Card
+              key={item.title}
+              className="border-none bg-[#181818] p-6"
+            >
               <div className="w-2xs">
                 <div
                   className={`rounded-md p-2 h-11 m-2 ${item.bg} inline-block`}
@@ -129,7 +182,7 @@ export default function Dashboard() {
         })}
       </div>
 
-      {/* action button */}
+      {/* New Order Button */}
       <div className="flex justify-start" dir="ltr">
         <Button className="bg-orange-500 px-6 hover:bg-orange-600">
           <Plus className="mr-2 size-4" />
@@ -137,8 +190,9 @@ export default function Dashboard() {
         </Button>
       </div>
 
-      {/* table */}
+      {/* Orders Table */}
       <Card className="border-none bg-[#181818] p-6">
+
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-white">
             آخر الطلبات
@@ -150,7 +204,7 @@ export default function Dashboard() {
         </div>
 
         <AppDataTable
-          data={ordersData}
+          data={orders?.data?.data || []}
           columns={tableColumns}
           containerClassName="bg-transparent p-0"
           tableCellClassName="text-white"

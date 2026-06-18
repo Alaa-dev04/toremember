@@ -6,14 +6,10 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { AppDataTable } from "@/shared/appdatatable";
+import { AppTableSkeleton } from "@/shared/apptableskeleton";
+import { Suspense } from "react";
 
-import {
-  FileText,
-  Clock3,
-  CheckCircle2,
-  XCircle,
-  Plus,
-} from "lucide-react";
+import { FileText, Clock3, CheckCircle2, XCircle, Plus } from "lucide-react";
 
 import { columns } from "@/features/orders/colums";
 import { $api } from "@/lib/tanstack.lib";
@@ -43,10 +39,10 @@ export default function Dashboard() {
   Fetch Order Stats
   ============================
   */
-  const {
-    data: statsapi,
-    isLoading: statsLoading,
-  } = $api.useQuery("get", "/orders/stats");
+  const { data: statsapi, isLoading: statsLoading } = $api.useQuery(
+    "get",
+    "/orders/stats",
+  );
 
   /*
   ============================
@@ -114,11 +110,7 @@ export default function Dashboard() {
   ============================
   */
   if (ordersLoading || statsLoading) {
-    return (
-      <div className="p-10 text-white text-center">
-        Loading dashboard...
-      </div>
-    );
+    return <div className="p-10  text-center">Loading dashboard...</div>;
   }
 
   /*
@@ -128,21 +120,16 @@ export default function Dashboard() {
   */
   if (ordersError) {
     return (
-      <div className="p-10 text-red-500 text-center">
-        Failed to fetch data
-      </div>
+      <div className="p-10 text-red-500 text-center">Failed to fetch data</div>
     );
   }
 
   return (
     <div dir="rtl" className="space-y-8 p-6">
-
       {/* Welcome Section */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">
-            alaa مرحباً بك
-          </h1>
+          <h1 className="text-3xl font-bold text-white">alaa مرحباً بك</h1>
 
           <p className="mt-2 text-sm text-zinc-400">
             تابع وإدر طلبات المشتريات الخاصة بك بسهولة
@@ -156,10 +143,7 @@ export default function Dashboard() {
           const Icon = item.icon;
 
           return (
-            <Card
-              key={item.title}
-              className="border-none bg-[#181818] p-6"
-            >
+            <Card key={item.title} className="border-none bg-[#181818] p-6">
               <div className="w-2xs">
                 <div
                   className={`rounded-md p-2 h-11 m-2 ${item.bg} inline-block`}
@@ -168,9 +152,7 @@ export default function Dashboard() {
                 </div>
 
                 <div className="text-right">
-                  <p className="text-sm text-zinc-400">
-                    {item.title}
-                  </p>
+                  <p className="text-sm text-zinc-400">{item.title}</p>
 
                   <p className="mt-3 text-3xl font-bold text-white">
                     {item.value}
@@ -192,24 +174,22 @@ export default function Dashboard() {
 
       {/* Orders Table */}
       <Card className="border-none bg-[#181818] p-6">
-
         <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">
-            آخر الطلبات
-          </h2>
+          <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
 
           <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
             مشاهدة الكل
           </button>
         </div>
-
-        <AppDataTable
-          data={orders?.data?.data || []}
-          columns={tableColumns}
-          containerClassName="bg-transparent p-0"
-          tableCellClassName="text-white"
-          isPaginated={false}
-        />
+        <Suspense fallback={<AppTableSkeleton />}>
+          <AppDataTable
+            data={orders?.data?.data || []}
+            columns={tableColumns}
+            containerClassName="bg-transparent p-0"
+            tableCellClassName="text-white"
+            isPaginated={false}
+          />
+        </Suspense>
       </Card>
     </div>
   );

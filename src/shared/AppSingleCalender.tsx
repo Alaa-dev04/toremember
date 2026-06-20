@@ -42,7 +42,7 @@ export default function AppSingleCalender({
       </PopoverTrigger>
 
       <PopoverContent
-        className="bg-[#353535] p-0 text-[#F9F9F9] ring-white/10 md:w-(--radix-popover-trigger-width)"
+        className="bg-[#353535] p-0 text-primary"
         align="start"
       >
         <Calendar

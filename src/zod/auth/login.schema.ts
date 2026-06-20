@@ -3,7 +3,7 @@ import { z } from "zod";
 export const loginSchema = z.object({
   username: z
     .string()
-    .min(3, "اسم المستخدم لازم يكون 3 حروف على الأقل"),
+    .min(2, "اسم المستخدم لازم يكون 3 حروف على الأقل"),
 
   password: z
     .string()

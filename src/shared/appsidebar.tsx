@@ -23,6 +23,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { useSession } from 'next-auth/react';
 
 import {
   ForwardRefExoticComponent,
@@ -34,6 +35,7 @@ import { LucideProps } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
 
 type menuItems = {
   title: string;
@@ -70,6 +72,8 @@ const menuItems = [
 // give up this is not for me
 function AppSidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  
 
   // Temporary placeholder for user data to avoid runtime errors when `me` is not available.
   const me = { data: { user: { username: '', role: '' } } };
@@ -135,11 +139,11 @@ function AppSidebar() {
             <div className="rounded-md bg-[#2B2B2B] p-4">
               <div className="flex flex-col text-left">
                 <span className="text-sm font-medium">
-                it user 
+                {session?.user?.name}
                 </span>
 
                 <span className="mt-1 text-xs text-[#A0A0A0]">
-               alaa@.com
+                  {session?.user?.email}
                 </span>
               </div>
             </div>

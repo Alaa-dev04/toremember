@@ -213,7 +213,7 @@ export default function LoginPage() {
                       </p>
                     )}
                     <button
-                      type="submit"
+                      type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3] hover:text-[#FDFDFD]"
                     >
@@ -221,7 +221,8 @@ export default function LoginPage() {
                     </button>
                   </div>
                 </div>
-                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full">
+                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full "
+                type="submit">
                   تسجيل الدخول
                 </Button>
               </form>

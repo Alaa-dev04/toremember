@@ -8,14 +8,19 @@ import { Button } from "@/components/ui/button";
 import { AppDataTable } from "@/shared/appdatatable";
 import { AppTableSkeleton } from "@/shared/apptableskeleton";
 import { Suspense } from "react";
+import { useSession } from 'next-auth/react';
+import OrdersModel from '@/shared/orders.model';
 
 import { FileText, Clock3, CheckCircle2, XCircle, Plus } from "lucide-react";
 
 import { columns } from "@/features/orders/colums";
 import { $api } from "@/lib/tanstack.lib";
+import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
+  const { data: session } = useSession();
+
 
   /*
   ============================
@@ -129,7 +134,7 @@ export default function Dashboard() {
       {/* Welcome Section */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">alaa مرحباً بك</h1>
+          <h1 className="text-3xl font-bold text-white">{session?.user.name} مرحباً بك</h1>
 
           <p className="mt-2 text-sm text-zinc-400">
             تابع وإدر طلبات المشتريات الخاصة بك بسهولة
@@ -166,20 +171,24 @@ export default function Dashboard() {
 
       {/* New Order Button */}
       <div className="flex justify-start" dir="ltr">
-        <Button className="bg-orange-500 px-6 hover:bg-orange-600">
+        <Link href="/new-order" >  
+         <Button className="bg-orange-500 px-6 hover:bg-orange-600 " type="button">
           <Plus className="mr-2 size-4" />
           طلب جديد
         </Button>
+        </Link> 
+     
       </div>
 
       {/* Orders Table */}
       <Card className="border-none bg-[#181818] p-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
-
-          <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
+        <Link href="/orders">
+         <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
             مشاهدة الكل
-          </button>
+          </button></Link>
+         
         </div>
         <Suspense fallback={<AppTableSkeleton />}>
           <AppDataTable

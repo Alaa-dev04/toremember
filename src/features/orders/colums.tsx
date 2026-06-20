@@ -75,7 +75,7 @@ export const columns = (
         return (
           <Link
             className="h-8 w-8"
-            href={`/dashboard?${params.toString()}`}
+            href={`/orders?${params.toString()}`}
           >
             <Eye className="h-4 w-4" />
           </Link>

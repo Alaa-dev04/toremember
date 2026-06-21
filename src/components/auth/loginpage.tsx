@@ -250,7 +250,7 @@ export default function LoginPage() {
                   type="submit"
                   className="
                     w-full h-12 rounded-lg
-                    bg-gradient-to-r from-orange-500 to-orange-600
+                    bg-linear-to-r from-orange-500 to-orange-600
                     hover:from-orange-600 hover:to-orange-700
                     text-white font-semibold
                     shadow-lg shadow-orange-500/20

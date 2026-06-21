@@ -112,7 +112,7 @@ function DialogContenWiden({
         <DialogPrimitive.Close data-slot="dialog-close" asChild>
           <Button
             variant="ghost"
-            className="absolute end-14 top-14 hidden! text-[#727272] hover:bg-[#A0A0A0]/10 [&_svg]:size-6!"
+            className="absolute inset-e-14 top-14 hidden! text-[#727272] hover:bg-[#A0A0A0]/10 [&_svg]:size-6!"
             size="icon-sm"
           >
             <XIcon />

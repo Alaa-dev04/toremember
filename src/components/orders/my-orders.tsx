@@ -7,6 +7,7 @@ import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
 import { columns } from "@/features/orders/colums";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
+import OrdersModel from "@/shared/orders.model";
 
 function Orders() {
   const handleView = (id: number) => {
@@ -48,6 +49,7 @@ function Orders() {
         totalItems={data?.data.total}
         isLoading={isLoading}
       />
+      <OrdersModel/>
     </div>
   );
 }

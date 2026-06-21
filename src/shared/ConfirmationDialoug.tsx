@@ -15,10 +15,11 @@ interface ConfirmationDialougProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
+
   title?: string;
   description?: string;
+
   confirmLabel?: string;
-  cancelLabel?: string;
   type?: 'delete' | 'reject';
 }
 
@@ -29,49 +30,57 @@ const ConfirmationDialoug = ({
   title,
   description,
   confirmLabel,
-  cancelLabel,
   type = 'delete',
 }: ConfirmationDialougProps) => {
   const isReject = type === 'reject';
+
   const displayTitle =
     title || (isReject ? 'رفض الطلب؟' : 'حذف العنصر؟');
+
   const displayDescription =
-    description !== undefined
-      ? description
-      : isReject
-        ? 'هل انت متأكد من رفض هذا الطلب؟'
-        : 'هل انت متأكد من حذف هذا العنصر من طلبك؟';
+    description ||
+    (isReject
+      ? 'هل أنت متأكد من رفض هذا الطلب؟'
+      : 'هل أنت متأكد من حذف هذا العنصر؟');
+
   const displayConfirmLabel =
-    confirmLabel || (isReject ? 'رفض الطلب' : 'حذف العنصر');
-  // const displayCancelLabel = cancelLabel || 'الغاء';
+    confirmLabel || (isReject ? 'رفض' : 'حذف');
+
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent
-        showCloseButton={false}
-        className="border border-[#A3A3A3]/41 p-8 sm:max-w-179.25"
-      >
-        <DialogHeader className="flex flex-col items-center gap-4">
-          <div className="flex items-center justify-center">
+      <DialogContent className="sm:max-w-md rounded-2xl p-6 bg-[#1B1B1B] text-white border border-white/10">
+
+        {/* Close */}
+        <DialogClose asChild>
+          <button className="absolute right-4 top-4 text-white/50 hover:text-white">
+            <X size={18} />
+          </button>
+        </DialogClose>
+
+        {/* Header */}
+        <DialogHeader className="text-center space-y-3">
+
+          <div className="mx-auto">
             {isReject ? (
-              <XCircle className="h-14 w-14 text-red-600" />
+              <XCircle className="h-12 w-12 text-red-500" />
             ) : (
-              <Trash2 className="h-14 w-14 text-red-600" />
+              <Trash2 className="h-12 w-12 text-red-500" />
             )}
           </div>
-          <DialogTitle className="text-center text-2xl text-white">
+
+          <DialogTitle className="text-xl font-semibold">
             {displayTitle}
           </DialogTitle>
-          <DialogDescription className="text-center text-lg text-[#A3A3A3]">
+
+          <DialogDescription className="text-sm text-white/60">
             {displayDescription}
           </DialogDescription>
+
         </DialogHeader>
 
-        <DialogFooter className="flex-col-reverse gap-3 sm:flex-row-reverse sm:justify-center">
-          <DialogClose asChild>
-            <button className="absolute top-5 right-5 text-[#A3A3A3] transition hover:text-white">
-              <X size={20} />
-            </button>
-          </DialogClose>
+        {/* Footer */}
+        <DialogFooter className="mt-6 flex flex-col gap-3 sm:flex-row">
+
           <Button
             onClick={onConfirm}
             variant="destructive"
@@ -79,7 +88,19 @@ const ConfirmationDialoug = ({
           >
             {displayConfirmLabel}
           </Button>
+
+          <DialogClose asChild>
+            <Button
+              variant="secondary"
+              onClick={onClose}
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white"
+            >
+              إلغاء
+            </Button>
+          </DialogClose>
+
         </DialogFooter>
+
       </DialogContent>
     </Dialog>
   );

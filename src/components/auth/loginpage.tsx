@@ -17,9 +17,9 @@ type Logingform = {
   username: string;
   password: string;
 };
+
 type logingPhase = "bg" | "logo-rise" | "logo-right" | "form";
 
-///makes the code cleaner easy to edit later and helps with type script type checking
 const PHASE_DELAYS = {
   logoRise: 2500,
   logoRight: 5500,
@@ -29,38 +29,41 @@ const PHASE_DELAYS = {
 export default function LoginPage() {
   const [phase, setPhase] = useState<logingPhase>("bg");
   const [showPassword, setShowPassword] = useState(false);
+
   const ANIMATION_DURATION = "duration-1000";
   const ANIMATION_DURATION_SLOW = "duration-[1400ms]";
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginSchemaType>({
-    resolver: zodResolver(loginSchema),
-
+    resolver: zodResolver(loginSchema as any),
     defaultValues: {
       username: "",
       password: "",
     },
-
     mode: "onSubmit",
   });
+
+  const router = useRouter();
+
   const onSubmit = async (data: Logingform) => {
     const res = await signIn("credentials", {
-      // Add logic here to look up the user from the credentials supplied
       redirect: false,
       username: data.username,
       password: data.password,
     });
+
     if (!res || res.error) {
       toast.error("فشل فى تسجيل الدخول ");
       return;
     }
+
     toast.success("تم تسجيل الدخول بنجاح");
     router.push("/dashboard");
   };
-  const router = useRouter();
-  ////need to use use effct becouse of the set time out
+
   useEffect(() => {
     const logoapptimer = setTimeout(() => {
       setPhase("logo-rise");
@@ -74,19 +77,16 @@ export default function LoginPage() {
       setPhase("form");
     }, PHASE_DELAYS.form);
 
-    ///clean up on timer when the components unmounts
     return () => {
       clearTimeout(logoapptimer);
       clearTimeout(logorighttimer);
       clearTimeout(formtimer);
     };
-
-    ///// empty dependency array to run the effect only once when the component mounts
   }, []);
 
   return (
     <>
-      {/* BACKGROUND ALWAYS EXISTS */}
+      {/* BACKGROUND */}
       <div className="fixed inset-0 bg-[#010000]">
         <Image
           src="/login_bg.gif"
@@ -97,26 +97,19 @@ export default function LoginPage() {
           className="object-cover object-bottom"
         />
 
-        {/* DARK OVERLAY */}
         <div className="absolute inset-0 bg-black/50">
-          {/* INTRO ANIMATION LAYER */}
-
+          {/* LOGO ANIMATION */}
           <div
             className={cn(
-              "absolute z-20 flex flex-col items-center transition-all ease-in-out ",
+              "absolute z-20 flex flex-col items-center transition-all ease-in-out",
               ANIMATION_DURATION_SLOW,
-
-              // BG (start)
-              phase === "bg" && "bottom-0 left-1/2 -translate-x-1/2 opacity-0",
-
-              // center animation
+              phase === "bg" &&
+                "bottom-0 left-1/2 -translate-x-1/2 opacity-0",
               phase === "logo-rise" &&
                 "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-100",
-
-              // FINAL POSITION (IMPORTANT FIX)
               phase === "logo-right" || phase === "form"
                 ? "top-1/2 right-[8%] left-auto -translate-y-1/2 opacity-100"
-                : "",
+                : ""
             )}
           >
             <Image
@@ -131,16 +124,15 @@ export default function LoginPage() {
             <div
               className={cn(
                 `mt-6 max-w-md text-center transition-all ${ANIMATION_DURATION}`,
-
                 phase === "logo-right" || phase === "form"
                   ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4",
+                  : "opacity-0 translate-y-4"
               )}
             >
-              <h3 className="text-xl leading-tight font-bold text-[#EBEBEB] md:text-3xl">
+              <h3 className="text-xl md:text-3xl font-bold text-[#EBEBEB]">
                 نظام ادارة طلبات تقنية المعلومات
               </h3>
-              <p className="mt-3 text-base text-[#D3D3D3] md:text-xl">
+              <p className="mt-3 text-[#D3D3D3] md:text-xl">
                 ادارة ذكية لطلبات الاقسام وعمليات المراجعة والاعتماد
               </p>
             </div>
@@ -148,13 +140,11 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* final layout ; form (left side)  + branding (right side) */}
+      {/* MAIN FORM LAYOUT */}
       <div
         className={cn(
-          ` z-10 grid grid-cols-1 md:grid-cols-2 
-           h-screen w-full transition-opacity
-           ${ANIMATION_DURATION} ease-in-out`,
-          phase === "form" ? "opacity-100" : "opacity-0",
+          `z-10 grid grid-cols-1 md:grid-cols-2 h-screen w-full transition-opacity ${ANIMATION_DURATION}`,
+          phase === "form" ? "opacity-100" : "opacity-0"
         )}
       >
         {/* FORM SIDE */}
@@ -164,39 +154,62 @@ export default function LoginPage() {
             ANIMATION_DURATION_SLOW,
             phase === "form"
               ? "translate-x-0 opacity-100"
-              : "-translate-x-10 opacity-0",
+              : "-translate-x-10 opacity-0"
           )}
         >
-          <div className="w-full max-w-2xl  ">
+          <div className="w-full max-w-2xl">
+
+            {/* FORM CARD (NEW DESIGN) */}
             <div
-              className="mb-10   bg-black p-6 rounded-lg text-right md:mb-16"
+              className="
+                w-full  rounded-2xl
+                bg-black backdrop-blur-xl
+                border border-white/10
+                shadow-[0_0_40px_rgba(0,0,0,0.6)]
+                p-6 md:p-10 text-right
+              "
               dir="rtl"
             >
-              <h1 className="text-3xl leading-tight font-bold text-[#FDFDFD] md:text-5xl">
+              {/* HEADER */}
+              <h1 className="text-3xl md:text-5xl font-bold text-white">
                 تسجيل الدخول
               </h1>
-              <p className="text-md mt-2 text-[#A3A3A3] md:text-xl">
+
+              <p className="text-sm md:text-lg mt-3 text-gray-300">
                 يرجى ادخال بياناتك لتسجيل دخولك الى النظام
               </p>
-              <form onSubmit={handleSubmit(onSubmit)}>
+
+              {/* FORM */}
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
+
+                {/* USERNAME */}
                 <div>
-                  <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
+                  <label className="block text-lg font-medium text-gray-200 mb-2">
                     اسم المستخدم
                   </label>
+
                   <Input
                     type="text"
                     placeholder="اسم المستخدم"
-                    className="w-full"
+                    className="
+                      w-full bg-black/30 border border-white/10
+                      text-white placeholder:text-gray-500
+                      rounded-lg h-12 px-4
+                      focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                    "
                     {...register("username")}
                   />
+
                   {errors.username && (
-                    <p className="text-red-500 text-sm mt-1">
+                    <p className="text-red-400 text-sm mt-2">
                       {errors.username.message}
                     </p>
                   )}
                 </div>
-                <div className="mt-4">
-                  <label className="block text-xl text-right font-medium text-[#FDFDFD] mb-2 ">
+
+                {/* PASSWORD */}
+                <div>
+                  <label className="block text-lg font-medium text-gray-200 mb-2">
                     كلمة المرور
                   </label>
 
@@ -204,25 +217,46 @@ export default function LoginPage() {
                     <Input
                       type={showPassword ? "text" : "password"}
                       placeholder="كلمة المرور"
-                      className="w-full"
+                      className="
+                        w-full bg-black/30 border border-white/10
+                        text-white placeholder:text-gray-500
+                        rounded-lg h-12 px-4 pr-12
+                        focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                      "
                       {...register("password")}
                     />
-                    {errors.password && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {errors.password.message}
-                      </p>
-                    )}
+
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A3A3A3] hover:text-[#FDFDFD]"
+                      className="
+                        absolute left-3 top-1/2 -translate-y-1/2
+                        text-gray-400 hover:text-orange-400 transition
+                      "
                     >
                       {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                     </button>
                   </div>
+
+                  {errors.password && (
+                    <p className="text-red-400 text-sm mt-2">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
-                <Button className="mt-6 bg-gray-600 hover:bg-gray-300 text-[#FDFDFD] w-full "
-                type="submit">
+
+                {/* BUTTON */}
+                <Button
+                  type="submit"
+                  className="
+                    w-full h-12 rounded-lg
+                    bg-gradient-to-r from-orange-500 to-orange-600
+                    hover:from-orange-600 hover:to-orange-700
+                    text-white font-semibold
+                    shadow-lg shadow-orange-500/20
+                    transition-all duration-300
+                  "
+                >
                   تسجيل الدخول
                 </Button>
               </form>

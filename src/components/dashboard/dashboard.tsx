@@ -10,15 +10,18 @@ import { AppTableSkeleton } from "@/shared/apptableskeleton";
 import { Suspense } from "react";
 import { useSession } from 'next-auth/react';
 import OrdersModel from '@/shared/orders.model';
+import { useQueryDialog } from "@/hooks/useQueryopendia";
+
 
 import { FileText, Clock3, CheckCircle2, XCircle, Plus } from "lucide-react";
 
-import { columns } from "@/features/orders/colums";
+import {columns } from "@/features/orders/colums";
 import { $api } from "@/lib/tanstack.lib";
 import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
+   const { openDialog } = useQueryDialog("orders");
   const { data: session } = useSession();
 
 
@@ -55,6 +58,7 @@ export default function Dashboard() {
   ============================
   */
   const handleView = (id: number) => {
+    openDialog(String(id));
     console.log("Viewing order:", id);
 
     // navigate to order details page
@@ -114,9 +118,7 @@ export default function Dashboard() {
   Loading State
   ============================
   */
-  if (ordersLoading || statsLoading) {
-    return <div className="p-10  text-center">Loading dashboard...</div>;
-  }
+
 
   /*
   ============================
@@ -187,7 +189,8 @@ export default function Dashboard() {
         <Link href="/orders">
          <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
             مشاهدة الكل
-          </button></Link>
+          </button>
+          </Link>
          
         </div>
         <Suspense fallback={<AppTableSkeleton />}>
@@ -197,7 +200,9 @@ export default function Dashboard() {
             containerClassName="bg-transparent p-0"
             tableCellClassName="text-white"
             isPaginated={false}
+            isLoading={ordersLoading}
           />
+          <OrdersModel/>
         </Suspense>
       </Card>
     </div>

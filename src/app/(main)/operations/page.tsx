@@ -1,11 +1,8 @@
-import React from 'react'
 
-const Operation = () => {
+import Operation from "@/components/operations/operation";
+
+export default function DashboardPage() {
   return (
-    <div>
-      hello
-    </div>
-  )
+    <Operation />
+  );
 }
-
-export default Operation

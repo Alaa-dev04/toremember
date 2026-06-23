@@ -145,7 +145,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-4 ">
         {stats.map((item) => {
           const Icon = item.icon;
 

@@ -21,8 +21,8 @@ export const AuthOptions: NextAuthOptions = {
           },
         });
         if (!data?.data?.user) return null;
-
-        const userMaper: Record<"IT" | "CTO" | "Accountant", string> = {
+        type role="it"|"cto"|"account";
+        const userMaper: Record<"IT" | "CTO" | "Accountant",role> = {
           IT: "it",
           CTO: "cto",
           Accountant: "account",

@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { SessionProvider } from "next-auth/react";
-
+import { Toaster } from "sonner";
 export default function Providers({
   children,
 }: {
@@ -15,7 +15,9 @@ export default function Providers({
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClinet}>
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>{children}
+           <Toaster/>
+        </NuqsAdapter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </SessionProvider>

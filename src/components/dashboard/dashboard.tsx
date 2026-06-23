@@ -8,23 +8,43 @@ import { Button } from "@/components/ui/button";
 import { AppDataTable } from "@/shared/appdatatable";
 import { AppTableSkeleton } from "@/shared/apptableskeleton";
 import { Suspense } from "react";
-import { useSession } from 'next-auth/react';
-import OrdersModel from '@/shared/orders.model';
+import { useSession } from "next-auth/react";
+import OrdersModel from "@/shared/orders.model";
 import { useQueryDialog } from "@/hooks/useQueryopendia";
-
+import { UserTypes } from "@/constants/auth.ct";
+import { IsAllowed } from "@/shared/isallowed";
+import { CtoOperationColoms } from "@/features/cto-operation-colum";
 
 import { FileText, Clock3, CheckCircle2, XCircle, Plus } from "lucide-react";
 
-import {columns } from "@/features/orders/colums";
+import { columns } from "@/features/orders/colums";
 import { $api } from "@/lib/tanstack.lib";
 import Link from "next/link";
+const hello = {
+  it: {
+    title: (name: string) => `مرحبــًا بــك مجددًا ${name}`,
+    description: "تابع وادِر طلبات المشتريات الخاصة بك بسهولة",
+  },
+  account: {
+    title: (name: string) => `مرحبــًا بــك مجددًا ${name}`,
+    description:
+      "لوحة المراجعة الإدارية واعتماد طلبات ومستلزمات الـ IT الخاصة بالأقسام المختلفة.",
+  },
+  cto: {
+    title: () => "لوحة تحكم النظام",
+    description: "متابعة الطلبات وإدارة المستخدمين وسجل العمليات",
+  },
+};
 
 export default function Dashboard() {
   const router = useRouter();
-   const { openDialog } = useQueryDialog("orders");
+  const { openDialog } = useQueryDialog("orders");
   const { data: session } = useSession();
-
-
+  const { data: sessionData } = useSession();
+  const userRole = (session?.user?.role as UserTypes) || "it";
+  const loggedUserRole = sessionData?.user?.role || "it";
+  const isCanViewOperations = loggedUserRole === "cto";
+  const hellohead = userRole && hello[userRole];
   /*
   ============================
   Fetch Orders
@@ -41,7 +61,21 @@ export default function Dashboard() {
       },
     },
   });
-
+  ////operation fetch
+  const { data: operations, isLoading: isOperationsLoading } = $api.useQuery(
+    "get",
+    "/audits",
+    {
+      params: {
+        query: {
+          paginate: "10",
+        },
+      },
+    },
+    {
+      enabled: isCanViewOperations,
+    },
+  );
   /*
   ============================
   Fetch Order Stats
@@ -119,7 +153,6 @@ export default function Dashboard() {
   ============================
   */
 
-
   /*
   ============================
   Error State
@@ -136,7 +169,9 @@ export default function Dashboard() {
       {/* Welcome Section */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">{session?.user.name} مرحباً بك</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {session?.user.name} مرحباً بك
+          </h1>
 
           <p className="mt-2 text-sm text-zinc-400">
             تابع وإدر طلبات المشتريات الخاصة بك بسهولة
@@ -173,25 +208,26 @@ export default function Dashboard() {
 
       {/* New Order Button */}
       <div className="flex justify-start" dir="ltr">
-        <Link href="/new-order" >  
-         <Button className="bg-orange-500 px-6 hover:bg-orange-600 " type="button">
-          <Plus className="mr-2 size-4" />
-          طلب جديد
-        </Button>
-        </Link> 
-     
+        <Link href="/new-order">
+          <Button
+            className="bg-orange-500 px-6 hover:bg-orange-600 "
+            type="button"
+          >
+            <Plus className="mr-2 size-4" />
+            طلب جديد
+          </Button>
+        </Link>
       </div>
 
       {/* Orders Table */}
       <Card className="border-none bg-[#181818] p-6">
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-white">آخر الطلبات</h2>
-        <Link href="/orders">
-         <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
-            مشاهدة الكل
-          </button>
+          <Link href="/orders">
+            <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
+              مشاهدة الكل
+            </button>
           </Link>
-         
         </div>
         <Suspense fallback={<AppTableSkeleton />}>
           <AppDataTable
@@ -202,9 +238,30 @@ export default function Dashboard() {
             isPaginated={false}
             isLoading={ordersLoading}
           />
-          <OrdersModel/>
+          <OrdersModel />
         </Suspense>
       </Card>
+
+      <IsAllowed roles={["cto"]}>
+        <Card className="border-none bg-[#181818] p-6">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-white">احدث العمليات </h2>
+            <Link href="/operation">
+              <button className="text-sm font-medium text-orange-500 border-b border-b-orange-500">
+                مشاهدة الكل
+              </button>
+            </Link>
+          </div>
+          <AppDataTable
+            data={operations?.data?.data || []}
+            columns={CtoOperationColoms}
+            containerClassName="bg-transparent p-0"
+            tableCellClassName="text-white"
+            isPaginated={false}
+            isLoading={ordersLoading}
+          />
+        </Card>
+      </IsAllowed>
     </div>
   );
 }

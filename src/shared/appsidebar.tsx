@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Sidebar,
@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar';
+} from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
   FileEdit,
@@ -18,72 +18,77 @@ import {
   SquareTerminal,
   ListChecks,
   Users,
-} from 'lucide-react';
+} from "lucide-react";
 
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+import { UserTypes } from "@/constants/auth.ct";
+import { IsAllowed } from "./isallowed";
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
+import { ForwardRefExoticComponent, Fragment, RefAttributes } from "react";
+import { LucideProps } from "lucide-react";
 
-import {
-  ForwardRefExoticComponent,
-  Fragment,
-  RefAttributes,
-} from 'react';
-import { LucideProps } from 'lucide-react';
-
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { $api } from "@/lib/tanstack.lib";
 
 type menuItems = {
   title: string;
   icon: ForwardRefExoticComponent<
-    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   href: string;
-  roles: string[];
+  roles: UserTypes[];
 }[];
-/////this is my way to die 
+/////this is my way to die
 
-const menuItems = [
+const menuItems: menuItems = [
   {
-    title: 'لوحة التحكم',
+    title: "لوحة التحكم",
     icon: LayoutDashboard,
-    href: '/dashboard',
-    roles: ['it', 'cto', 'account'],
+    href: "/dashboard",
+    roles: ["it", "cto", "account"],
   },
   {
-    title: 'طلب جديد',
+    title: "طلب جديد",
     icon: FileEdit,
-    href: '/new-order',
-    roles: ['it'],
+    href: "/new-order",
+    roles: ["it"],
   },
   {
-    title: 'طلباتي',
+    title: "طلباتي",
     icon: Package,
-    href: '/orders',
-    roles: ['it'],
+    href: "/orders",
+    roles: ["it"],
   },
-  
-
+  {
+    title: "جميع الطلبات",
+    icon: Package,
+    href: "/orders",
+    roles: ["cto", "account"],
+  },
+  {
+    title: "إدارة المستخدمين",
+    icon: Users,
+    href: "/users",
+    roles: ["cto"],
+  },
+  {
+    title: "سجل العمليات",
+    icon: ListChecks,
+    href: "/operations",
+    roles: ["cto"],
+  },
 ];
 // give up this is not for me
 function AppSidebar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  
-
-  // Temporary placeholder for user data to avoid runtime errors when `me` is not available.
-  const me = { data: { user: { username: '', role: '' } } };
-
+  const { data: me } = $api.useQuery("get", "/auth/me");
 
   return (
-    <Sidebar
-  
-      className="bg-sidebar border-none"
-    >
+    <Sidebar className="bg-sidebar border-none">
       <div className="flex h-full flex-col gap-8 p-4 py-6 text-white">
         {/* Header */}
         <SidebarHeader>
@@ -98,7 +103,7 @@ function AppSidebar() {
             </div>
           </div>
         </SidebarHeader>
-{/* haneen good for you u really know how to get on with this live  */}
+        {/* haneen good for you u really know how to get on with this live  */}
         {/* Content */}
         <SidebarContent>
           <SidebarGroup>
@@ -110,14 +115,15 @@ function AppSidebar() {
 
                 return (
                   <Fragment key={item.title}>
-                      <SidebarMenuItem>
+                    <IsAllowed roles={item.roles}>
+                      <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton
                           asChild
                           className={cn(
-                            'h-12 rounded-md px-4 text-base font-medium transition-colors',
+                            "h-12 rounded-md px-4 text-base font-medium transition-colors",
                             isActive
-                              ? 'bg-primary hover:bg-primary/90 text-white hover:text-white'
-                              : 'bg-[#2C2C2C] text-zinc-300 hover:bg-[#3A3A3A] hover:text-white'
+                              ? "bg-primary hover:bg-primary/90 text-white hover:text-white"
+                              : "bg-[#2C2C2C] text-zinc-300 hover:bg-[#3A3A3A] hover:text-white",
                           )}
                         >
                           <Link href={item.href}>
@@ -126,6 +132,7 @@ function AppSidebar() {
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
+                    </IsAllowed>
                   </Fragment>
                 );
               })}
@@ -139,11 +146,11 @@ function AppSidebar() {
             <div className="rounded-md bg-[#2B2B2B] p-4">
               <div className="flex flex-col text-left">
                 <span className="text-sm font-medium">
-                {session?.user?.name}
+                  {me?.data?.user?.username}
                 </span>
 
                 <span className="mt-1 text-xs text-[#A0A0A0]">
-                  {session?.user?.email}
+                  {me?.data?.user?.role}
                 </span>
               </div>
             </div>
@@ -152,7 +159,7 @@ function AppSidebar() {
               onClick={async () => {
                 await signOut({
                   redirect: true,
-                  callbackUrl: '/login',
+                  callbackUrl: "/login",
                 });
               }}
               className="flex w-full items-center justify-start gap-2 rounded-md px-4 py-3"

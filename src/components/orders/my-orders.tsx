@@ -14,7 +14,7 @@ function Orders() {
     console.log("Viewing order:", id);
 
     // navigate to order details page
-    router.push(`/dashboard/orders/${id}`);
+    router.push(`/orders/${id}`);
   };
   const tableColumns = useMemo(() => {
     return columns(handleView);

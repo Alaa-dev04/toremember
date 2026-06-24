@@ -260,7 +260,7 @@ const InsertForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger className="w-full md:max-w-120">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="اختر العنصر المطلوب" />
                     </SelectTrigger>
                     <SelectContent className="max-h-56">
@@ -306,7 +306,7 @@ const InsertForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger className="w-full md:max-w-120">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="اختر الشركة" />
                     </SelectTrigger>
                     <SelectContent className="max-h-56">
@@ -351,7 +351,7 @@ const InsertForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger className="w-full md:max-w-120">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="اختر القسم" />
                     </SelectTrigger>
                     <SelectContent className="max-h-56">
@@ -438,7 +438,7 @@ const InsertForm = () => {
                     }}
                     value={field.value || ""}
                   >
-                    <SelectTrigger className="w-full md:max-w-120">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="مقدم الطلب" />
                     </SelectTrigger>
                     <SelectContent className="max-h-56">

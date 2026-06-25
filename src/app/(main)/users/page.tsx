@@ -1,9 +1,9 @@
-import MyOrder from "@/components/orders/my-orders";
+import Users from "@/components/users/users"
 
 
 const page = () => {
   return (
-    <div className="m-4"><MyOrder/> </div>
+    <div className="m-4 " dir="rtl"><Users/> </div>
      )
 }
 

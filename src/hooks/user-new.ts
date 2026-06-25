@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 export function useNewUser() {
   const form = useForm<CreateUserFormValues>({
-    resolver: zodResolver(Createusershema ),
+    resolver: zodResolver(Createusershema as any),
     defaultValues: {
       frist_name: '',
       last_name: '',

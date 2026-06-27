@@ -39,7 +39,7 @@ const ItemDialog = ({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="border border-[#A3A3A3]/41 p-6 sm:max-w-[1012px]"
+        className="border border-[#A3A3A3]/41 p-6 sm:max-w-235"
       >
         <DialogHeader className="flex gap-2">
           <DialogTitle className="text-xl text-[#FDFDFD]">

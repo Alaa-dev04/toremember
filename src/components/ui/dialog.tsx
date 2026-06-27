@@ -72,7 +72,13 @@ function DialogContent({
         )}
         {...props}
       >
+        {/* ADDED - hidden accessibility title */}
+        <DialogPrimitive.Title className="sr-only">
+          Dialog
+        </DialogPrimitive.Title>
+
         {children}
+
         {showCloseButton && (
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
@@ -89,6 +95,7 @@ function DialogContent({
     </DialogPortal>
   );
 }
+
 function DialogContenWiden({
   className,
   children,
@@ -103,27 +110,35 @@ function DialogContenWiden({
       data-slot="dialog-content"
       className={cn(
         'bg-popover text-popover-foreground ring-foreground/10 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 fixed inset-s-1/2 top-1/2 z-50 grid w-full max-w-[calc(100%-2rem)]! -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl p-4 text-sm ring-1 duration-100 outline-none sm:max-w-3xl md:max-w-[calc(100%-14.2rem)]! rtl:translate-x-1/2',
-        className
-      )}
-      {...props}
-    >
-      {children}
-      {showCloseButton && (
-        <DialogPrimitive.Close data-slot="dialog-close" asChild>
-          <Button
-            variant="ghost"
-            className="absolute inset-e-14 top-14 hidden! text-[#727272] hover:bg-[#A0A0A0]/10 [&_svg]:size-6!"
-            size="icon-sm"
-          >
-            <XIcon />
-            <span className="sr-only">Close</span>
-          </Button>
-        </DialogPrimitive.Close>
-      )}
-    </DialogPrimitive.Content>
-  );
+          className
+        )}
+        {...props}
+      >
+        {/* ADDED - hidden accessibility title */}
+        <DialogPrimitive.Title className="sr-only">
+          Dialog
+        </DialogPrimitive.Title>
+
+        {children}
+
+        {showCloseButton && (
+          <DialogPrimitive.Close data-slot="dialog-close" asChild>
+            <Button
+              variant="ghost"
+              className="absolute inset-e-14 top-14 hidden! text-[#727272] hover:bg-[#A0A0A0]/10 [&_svg]:size-6!"
+              size="icon-sm"
+            >
+              <XIcon />
+              <span className="sr-only">Close</span>
+            </Button>
+          </DialogPrimitive.Close>
+        )}
+      </DialogPrimitive.Content>
+    );
 }
+
 DialogContenWiden.displayName = 'DialogContenWiden';
+
 function DialogHeader({
   className,
   ...props

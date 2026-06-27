@@ -6,16 +6,18 @@ import { usersColums } from "@/features/user-colum";
 import { Suspense } from "react";
 import { $api } from "@/lib/tanstack.lib";
 import { User } from "lucide-react";
+import EditUserModel from "@/shared/edituser";
+import NewUserModel from "@/shared/newuser";
 
 const users = () => {
   const { data, isLoading } = $api.useQuery("get", "/users");
   return (
     <div className="flex flex-col gap-9">
       <Suspense fallback={<div>Loading...</div>}>
-        {/* <CreateUserModel /> */}
+        <NewUserModel />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
-        {/* <EditUserModel /> */}
+        <EditUserModel />
       </Suspense>
       <div>
         <h1 className="font-medium text-3xl pb-1"> إدارة المستخدمين</h1>

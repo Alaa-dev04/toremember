@@ -16,7 +16,7 @@ export default function Providers({
     <SessionProvider>
       <QueryClientProvider client={queryClinet}>
         <NuqsAdapter>{children}
-           <Toaster/>
+           <Toaster position="bottom-left" />
         </NuqsAdapter>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

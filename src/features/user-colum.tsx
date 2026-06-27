@@ -38,20 +38,11 @@ export const usersColums: ColumnDef<users>[] = [
       const params = new URLSearchParams(window.location.search);
       if (row.original.id)
         params.set("dialog-edit-user", row.original.id?.toString());
-      return (
-        <div>
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Ellipsis />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-secondary text-white hover:text-white/80!">
-              <DropdownMenuItem asChild>
-                <Link href={`/users?${params.toString()}`}>تعديل</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
+    return (
+      <Link href={`/users?${params.toString()}`}>
+        <Ellipsis className="cursor-pointer" />
+      </Link>
+    );
     },
   },
 ];

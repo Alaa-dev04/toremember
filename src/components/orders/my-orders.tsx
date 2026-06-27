@@ -4,7 +4,7 @@ import { AppDataTable } from "@/shared/appdatatable";
 import Filtrationbar from "./filtarationbar";
 import { $api } from "@/lib/tanstack.lib";
 import { useQueryStates, parseAsString, parseAsInteger } from "nuqs";
-import { columns } from "@/features/orders/colums";
+import { columns } from "@/features/orders/orderscolums";
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import OrdersModel from "@/shared/orders.model";

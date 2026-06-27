@@ -300,7 +300,7 @@ const OrdersModel = () => {
           <IsAllowed roles={['account']}>
             <Button
               onClick={() => router.push(`/orders/${orderId}/invoice`)}
-              className="mt-8 mr-auto h-11 w-fit min-w-[196px] justify-between! rounded-lg bg-[#FF6A00] px-5 text-sm font-semibold text-white hover:bg-[#E85F00]"
+              className="mt-8 mr-auto h-11 w-fit min-w-49 justify-between! rounded-lg bg-[#FF6A00] px-5 text-sm font-semibold text-white hover:bg-[#E85F00]"
             >
               تحميل الطلب
               <Download className="size-4" />

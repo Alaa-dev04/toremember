@@ -9,8 +9,8 @@ import {
   DialogContenWiden,
   DialogDescription,
   DialogHeader,
-  DialogOverlay,
   DialogTitle,
+  // ✅ DialogOverlay removed — now handled inside DialogContenWiden
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -105,7 +105,6 @@ const OrdersModel = () => {
     { enabled: !!orderId }
   );
 
-  // derived display values
   const canShowAccountActions = data?.data?.status === 'pending';
   const orderCreatedAt = data?.data?.created_at
     ? new Date(data.data.created_at)
@@ -124,9 +123,6 @@ const OrdersModel = () => {
     orderCreatedAt && data?.data?.id
       ? `Req${orderCreatedAt.getFullYear()}-${data.data.id}`
       : '';
-  const orderDisplayDate = orderCreatedAt
-    ? `${arabicDateFormatter.format(orderCreatedAt)} - ${arabicTimeFormatter.format(orderCreatedAt)}`
-    : '';
 
   const handleApprove = async () => {
     await updateStatus(
@@ -180,8 +176,7 @@ const OrdersModel = () => {
           if (!status) closeDialog();
         }}
       >
-        <DialogOverlay />
-
+        {/* ✅ <DialogOverlay /> removed here */}
         <DialogContenWiden
           showCloseButton={true}
           hidden={!orderId}

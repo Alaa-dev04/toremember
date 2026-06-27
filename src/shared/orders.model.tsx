@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import { useQueryState, parseAsString } from 'nuqs';
-
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   Dialog,
   DialogContenWiden,
@@ -10,17 +12,22 @@ import {
   DialogOverlay,
   DialogTitle,
 } from '@/components/ui/dialog';
-
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import { Download } from 'lucide-react';
+
 import { $api } from '@/lib/tanstack.lib';
 import { useQueryDialog } from '@/hooks/useQueryopendia';
-
+import { IsAllowed } from './isallowed';
 import { AppDataTable } from '@/shared/appdatatable';
-
 import {
   ctoViewOrderTableColumns,
   itViewOrdersTableHeader,
 } from '@/features/orders/open-order-table';
+import RejectConfirmationDialoug from './reject';
+import SuccessDialoug from './sucessdialoug';
+import { useRouter } from 'next/navigation';
 
 const OrdersModelSkeleton = () => (
   <div className="flex flex-col gap-6">
@@ -49,7 +56,6 @@ const OrdersModelSkeleton = () => (
           <Skeleton key={index} className="h-6 bg-white/10" />
         ))}
       </div>
-
       {Array.from({ length: 4 }).map((_, rowIndex) => (
         <div
           key={rowIndex}
@@ -66,10 +72,16 @@ const OrdersModelSkeleton = () => (
       <Skeleton className="h-6 w-36 bg-white/10" />
       <Skeleton className="h-24 w-full bg-white/5" />
     </div>
+
+    <div className="my-8 flex gap-20">
+      <Skeleton className="h-14 flex-1 rounded-xs bg-white/10" />
+      <Skeleton className="h-14 flex-1 rounded-xs bg-white/10" />
+    </div>
   </div>
 );
 
 const OrdersModel = () => {
+  const router = useRouter();
   const { isOpen, closeDialog } = useQueryDialog('orders');
 
   const [orderId] = useQueryState(
@@ -77,105 +89,255 @@ const OrdersModel = () => {
     parseAsString.withDefault('')
   );
 
+  const queryClient = useQueryClient();
+  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+
+  const { mutateAsync: updateStatus, isPending } = $api.useMutation(
+    'put',
+    '/orders/{id}/status'
+  );
+
   const { data, isLoading } = $api.useQuery(
     'get',
     '/orders/{id}',
-    {
-      params: {
-        path: { id: orderId },
-      },
-    },
-    {
-      enabled: !!orderId,
-    }
+    { params: { path: { id: orderId } } },
+    { enabled: !!orderId }
   );
 
-  return (
-    <Dialog
-      open={isOpen('orders')}
-      onOpenChange={(status) => {
-        if (!status) {
+  // derived display values
+  const canShowAccountActions = data?.data?.status === 'pending';
+  const orderCreatedAt = data?.data?.created_at
+    ? new Date(data.data.created_at)
+    : null;
+  const arabicDateFormatter = new Intl.DateTimeFormat('ar-EG-u-nu-latn', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  const arabicTimeFormatter = new Intl.DateTimeFormat('ar-EG-u-nu-latn', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+  const orderDisplayNumber =
+    orderCreatedAt && data?.data?.id
+      ? `Req${orderCreatedAt.getFullYear()}-${data.data.id}`
+      : '';
+  const orderDisplayDate = orderCreatedAt
+    ? `${arabicDateFormatter.format(orderCreatedAt)} - ${arabicTimeFormatter.format(orderCreatedAt)}`
+    : '';
+
+  const handleApprove = async () => {
+    await updateStatus(
+      {
+        params: { path: { id: orderId } },
+        body: { status: 'accepted', rejection_reason: null },
+      },
+      {
+        onSuccess: (res) => {
+          toast.success(res?.message);
+          queryClient.invalidateQueries();
+          setIsSuccessDialogOpen(true);
+        },
+        onError: (error: Error) => {
+          toast.error(error?.message);
+        },
+      }
+    );
+  };
+
+  const handleRejectConfirm = async (reason: string) => {
+    if (!reason) {
+      toast.error('الرجاء إدخال سبب الرفض');
+      return;
+    }
+
+    await updateStatus(
+      {
+        params: { path: { id: orderId } },
+        body: { status: 'rejected', rejection_reason: reason },
+      },
+      {
+        onSuccess: (res) => {
+          toast.success(res?.message);
+          queryClient.invalidateQueries();
+          setIsRejectDialogOpen(false);
           closeDialog();
-        }
-      }}
-    >
-      <DialogOverlay />
+        },
+        onError: (error: Error) => {
+          toast.error(error?.message);
+        },
+      }
+    );
+  };
 
-      <DialogContenWiden
-        showCloseButton={true}
-        className="max-h-screen overflow-y-auto rounded-sm bg-[#222222]"
+  return (
+    <>
+      <Dialog
+        open={isOpen('orders')}
+        onOpenChange={(status) => {
+          if (!status) closeDialog();
+        }}
       >
-        {/* ✅ FIX (DO NOT CHANGE UI) — required by Radix */}
-        <DialogHeader>
-          <DialogTitle className="sr-only">
-            معلومات عن الطلب
-          </DialogTitle>
-        </DialogHeader>
+        <DialogOverlay />
 
-        {isLoading ? (
-          <OrdersModelSkeleton />
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle className="text-2xl font-medium text-white">
-                معلومات عن الطلب
-              </DialogTitle>
+        <DialogContenWiden
+          showCloseButton={true}
+          hidden={!orderId}
+          className="max-h-screen overflow-y-auto rounded-sm bg-[#222222]"
+        >
+          {isLoading ? (
+            <OrdersModelSkeleton />
+          ) : (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl font-medium text-white">
+                  معلومات عن الطلب
+                </DialogTitle>
+                <DialogDescription className="text-base text-[#A0A0A0]">
+                  عرض كافة تفاصيل الطلب المالي والمستندات المرتبطة به،
+                  مع إمكانية مراجعة البيانات واتخاذ القرار المناسب بشأن الطلب.
+                </DialogDescription>
 
-              <DialogDescription className="text-base text-[#A0A0A0]">
-                عرض كافة تفاصيل الطلب المالي والمستندات المرتبطة به،
-                مع إمكانية مراجعة البيانات واتخاذ القرار المناسب
-                بشأن الطلب.
-              </DialogDescription>
-            </DialogHeader>
+                <IsAllowed roles={['cto']}>
+                  {data?.data?.status === 'pending' && (
+                    <div className="flex justify-end">
+                      <Badge
+                        variant="warning"
+                        className="me-4 mt-4 px-10 py-1.5"
+                      >
+                        قيد المراجعة
+                      </Badge>
+                    </div>
+                  )}
+                </IsAllowed>
+              </DialogHeader>
 
-            <div className="flex flex-col gap-6">
-              <AppDataTable
-                columns={itViewOrdersTableHeader}
-                data={[
-                  {
-                    id: data?.data?.id || '',
-                    created_at: data?.data?.created_at || '',
-                  },
-                ]}
-                isPaginated={false}
-                isLoading={isLoading}
-                containerClassName="border-2 border-[#535353] p-0"
-                tableCellClassName="bg-[#1A1A1A]"
-              />
+              <div className="flex flex-col gap-6">
+                <IsAllowed roles={['it', 'cto']}>
+                  <AppDataTable
+                    columns={itViewOrdersTableHeader}
+                    data={[
+                      {
+                        id: data?.data?.id || '',
+                        created_at: data?.data?.created_at || '',
+                      },
+                    ]}
+                    isPaginated={false}
+                    isLoading={isLoading}
+                    containerClassName="border-2 border-[#535353] p-0"
+                    tableCellClassName="bg-[#1A1A1A]"
+                  />
+                </IsAllowed>
 
-              <AppDataTable
-                columns={ctoViewOrderTableColumns}
-                data={data?.data?.order_items || []}
-                isPaginated={false}
-                isLoading={isLoading}
-                containerClassName="border-2 border-[#535353] p-0"
-                tableCellClassName="bg-[#1A1A1A]"
-              />
+                <AppDataTable
+                  columns={ctoViewOrderTableColumns}
+                  data={data?.data?.order_items || []}
+                  isPaginated={false}
+                  isLoading={isLoading}
+                  containerClassName="border-2 border-[#535353] p-0"
+                  tableCellClassName="bg-[#1A1A1A]"
+                />
 
-              <div
-                className={`flex flex-col gap-2 rounded-md text-[#FDFDFD] ${
-                  data?.data?.status === 'rejected'
-                    ? 'bg-[#EC0909]'
-                    : 'bg-[#303030]'
-                }`}
-              >
-                <h3 className="p-4 text-base font-bold text-white">
-                  {data?.data?.status === 'rejected'
-                    ? 'سبب الرفض'
-                    : 'ملاحظات الطلب'}
-                </h3>
+                {isLoading ? (
+                  <div className="flex flex-col gap-3 rounded-md bg-[#303030] p-4">
+                    <Skeleton className="h-6 w-36 bg-white/10" />
+                    <Skeleton className="h-24 w-full bg-white/5" />
+                  </div>
+                ) : (
+                  <div
+                    className={`flex flex-col gap-2 rounded-md text-[#FDFDFD] ${
+                      data?.data?.status === 'rejected'
+                        ? 'bg-[#EC0909]'
+                        : 'bg-[#303030]'
+                    }`}
+                  >
+                    <h3 className="p-4 text-base font-bold text-white">
+                      {data?.data?.status === 'rejected'
+                        ? 'سبب الرفض'
+                        : 'ملاحظات الطلب'}
+                    </h3>
+                    <p className="bg-[#1A1A1A] p-4 pt-6 text-base text-[#A0A0A0]">
+                      {data?.data?.status === 'rejected'
+                        ? data?.data?.rejection_reason
+                        : data?.data?.notes}
+                    </p>
+                  </div>
+                )}
 
-                <p className="bg-[#1A1A1A] p-4 pt-6 text-base text-[#A0A0A0]">
-                  {data?.data?.status === 'rejected'
-                    ? data?.data?.rejection_reason
-                    : data?.data?.notes}
-                </p>
+                <IsAllowed roles={['account']}>
+                  {isLoading ? (
+                    <div className="my-8 flex gap-20">
+                      <Skeleton className="h-14 flex-1 rounded-xs bg-white/10" />
+                      <Skeleton className="h-14 flex-1 rounded-xs bg-white/10" />
+                    </div>
+                  ) : canShowAccountActions ? (
+                    <div className="my-8 flex gap-20">
+                      <Button
+                        variant="success"
+                        className="h-14 flex-1 rounded-xs text-xl font-bold"
+                        onClick={handleApprove}
+                        disabled={isPending}
+                      >
+                        اعتماد الطلب
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        className="h-14 flex-1 rounded-xs text-xl font-bold"
+                        onClick={() => setIsRejectDialogOpen(true)}
+                        disabled={isPending}
+                      >
+                        رفض الطلب
+                      </Button>
+                    </div>
+                  ) : null}
+                </IsAllowed>
               </div>
-            </div>
-          </>
-        )}
-      </DialogContenWiden>
-    </Dialog>
+            </>
+          )}
+
+          <IsAllowed roles={['account']}>
+            <Button
+              onClick={() => router.push(`/orders/${orderId}/invoice`)}
+              className="mt-8 mr-auto h-11 w-fit min-w-[196px] justify-between! rounded-lg bg-[#FF6A00] px-5 text-sm font-semibold text-white hover:bg-[#E85F00]"
+            >
+              تحميل الطلب
+              <Download className="size-4" />
+            </Button>
+          </IsAllowed>
+        </DialogContenWiden>
+      </Dialog>
+
+      <RejectConfirmationDialoug
+        isOpen={isRejectDialogOpen}
+        onClose={() => setIsRejectDialogOpen(false)}
+        onConfirm={handleRejectConfirm}
+      />
+
+      <SuccessDialoug
+        isOpen={isSuccessDialogOpen}
+        onClose={() => {
+          setIsSuccessDialogOpen(false);
+          closeDialog();
+        }}
+        onGoToOrders={() => {
+          setIsSuccessDialogOpen(false);
+          closeDialog();
+        }}
+        onCreateNew={() => {
+          setIsSuccessDialogOpen(false);
+          router.push(`/orders/${data?.data.id}/invoice`);
+        }}
+        variant="approval"
+        title="تم اعتماد الطلب بنجاح!"
+        description="تم إرسال الطلب بنجاح لقسم الدعم الفني لاستكمال عملية التوريد"
+        orderNumber={orderDisplayNumber}
+        orderDate={data?.data?.created_at}
+        createNewLabel="تحميل الطلب"
+        goToOrdersLabel="الذهاب إلى الطلبات"
+      />
+    </>
   );
 };
 

@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { CircleCheck, CircleX, FileText, X } from 'lucide-react';
+import { CircleCheck, CircleX, FileText, X, Download } from 'lucide-react';
 
 interface SuccessDialougProps {
   isOpen: boolean;
@@ -29,6 +29,11 @@ interface SuccessDialougProps {
   statusText?: string;
   statusLabel?: string;
 
+  // ✅ added missing props that document 3 passes
+  variant?: 'success' | 'delete' | 'approval';
+  createNewLabel?: string;
+  goToOrdersLabel?: string;
+
   type?: 'success' | 'delete';
 }
 
@@ -43,31 +48,32 @@ const SuccessDialoug = ({
   description,
   statusText = 'سيتم مراجعة طلبك قريبًا',
   statusLabel = 'قيد المراجعة',
-  type = 'success',
+  variant = 'success',
+  createNewLabel,
+  goToOrdersLabel,
+  type,
 }: SuccessDialougProps) => {
-  const isDelete = type === 'delete';
+  // ✅ derive isDelete from either `type` or `variant`
+  const isDelete = type === 'delete' || variant === 'delete';
+  const isApproval = variant === 'approval';
 
   const displayTitle =
     title || (isDelete ? 'تم الحذف' : 'تم إرسال الطلب');
 
   const displayDescription =
     description ||
-    (isDelete
-      ? ''
-      : 'تم استلام طلبك وسيتم مراجعته من الفريق المختص');
+    (isDelete ? '' : 'تم استلام طلبك وسيتم مراجعته من الفريق المختص');
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-md rounded-2xl p-6 bg-[#1B1B1B] text-white border border-white/10">
 
-        {/* Close */}
         <DialogClose asChild>
           <button className="absolute right-4 top-4 text-white/60 hover:text-white">
             <X size={18} />
           </button>
         </DialogClose>
 
-        {/* Header */}
         <DialogHeader className="text-center space-y-3">
           <div className="mx-auto">
             {isDelete ? (
@@ -88,23 +94,18 @@ const SuccessDialoug = ({
           )}
         </DialogHeader>
 
-        {/* Order Info */}
         {!isDelete && (
           <div className="mt-6 space-y-4">
-
             <div className="flex items-center gap-3 rounded-xl bg-white/5 p-4">
               <FileText className="w-5 h-5 text-orange-400" />
-
               <div className="text-sm">
                 <p className="text-white/60">Order #</p>
                 <p className="font-medium text-white">{orderNumber}</p>
               </div>
             </div>
 
-            {/* Status */}
             <div className="text-center space-y-2">
               <p className="text-sm text-white/60">{statusText}</p>
-
               <Badge variant="warning" className="px-3 py-1 text-xs">
                 {statusLabel}
               </Badge>
@@ -112,15 +113,15 @@ const SuccessDialoug = ({
           </div>
         )}
 
-        {/* Footer */}
         {!isDelete && (
           <DialogFooter className="mt-6 flex flex-col gap-3 sm:flex-row">
-
             <Button
               onClick={onCreateNew}
               className="w-full sm:w-auto gap-2 bg-orange-500 hover:bg-orange-600"
             >
-              New Order <ContractIcon />
+              {/* ✅ uses createNewLabel if passed, falls back to default */}
+              {createNewLabel ?? 'New Order'} 
+              {isApproval ? <Download className="size-4" /> : <ContractIcon />}
             </Button>
 
             <Button
@@ -128,9 +129,10 @@ const SuccessDialoug = ({
               variant="secondary"
               className="w-full sm:w-auto gap-2 bg-white/10 hover:bg-white/20 text-white"
             >
-              My Orders <PackageIcon />
+              {/* ✅ uses goToOrdersLabel if passed, falls back to default */}
+              {goToOrdersLabel ?? 'My Orders'}
+              {!isApproval && <PackageIcon />}
             </Button>
-
           </DialogFooter>
         )}
       </DialogContent>

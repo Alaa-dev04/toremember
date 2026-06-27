@@ -170,7 +170,7 @@ export default function Dashboard() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">
-            {session?.user.name} مرحباً بك
+            {session?.user?.username} مرحباً بك
           </h1>
 
           <p className="mt-2 text-sm text-zinc-400">
@@ -207,17 +207,20 @@ export default function Dashboard() {
       </div>
 
       {/* New Order Button */}
-      <div className="flex justify-start" dir="ltr">
-        <Link href="/new-order">
-          <Button
-            className="bg-orange-500 px-6 hover:bg-orange-600 "
-            type="button"
-          >
-            <Plus className="mr-2 size-4" />
-            طلب جديد
-          </Button>
-        </Link>
-      </div>
+
+      <IsAllowed roles={["it"]}>
+        <div className="flex justify-start" dir="ltr">
+          <Link href="/new-order">
+            <Button
+              className="bg-orange-500 px-6 hover:bg-orange-600 "
+              type="button"
+            >
+              <Plus className="mr-2 size-4" />
+              طلب جديد
+            </Button>
+          </Link>
+        </div>
+      </IsAllowed>
 
       {/* Orders Table */}
       <Card className="border-none bg-[#181818] p-6">

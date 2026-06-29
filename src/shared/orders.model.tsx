@@ -294,7 +294,7 @@ const OrdersModel = () => {
 
           <IsAllowed roles={['account']}>
             <Button
-              onClick={() => router.push(`/orders/${orderId}/invoice`)}
+              onClick={() => router.push(`/${orderId}/invoice`)}
               className="mt-8 mr-auto h-11 w-fit min-w-49 justify-between! rounded-lg bg-[#FF6A00] px-5 text-sm font-semibold text-white hover:bg-[#E85F00]"
             >
               تحميل الطلب
@@ -318,7 +318,8 @@ const OrdersModel = () => {
         }}
         onGoToOrders={() => {
           setIsSuccessDialogOpen(false);
-          closeDialog();
+          // closeDialog();
+          router.push('/orders');
         }}
         onCreateNew={() => {
           setIsSuccessDialogOpen(false);
